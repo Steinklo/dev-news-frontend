@@ -2,9 +2,9 @@
 
 import type { CategoriesResponse, NewsByCategoryResponse } from "./types";
 
-// Use relative URL to go through Next.js proxy (avoids CORS)
-// The proxy rewrites /api/* to http://localhost:7020/api/*
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL ?? "/api/v1";
+// For static export, call the API directly
+// Set NEXT_PUBLIC_API_URL in your environment (e.g., https://func-devnews-api-dev.azurewebsites.net/api/v1)
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:7020/api/v1";
 
 class ApiError extends Error {
   constructor(

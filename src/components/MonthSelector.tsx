@@ -1,21 +1,17 @@
 // src/components/MonthSelector.tsx
 "use client";
 
-import { useRouter, useSearchParams } from "next/navigation";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { format, subMonths, addMonths, parse } from "date-fns";
 import { Button } from "@/components/ui/button";
 import { getCurrentYearMonth } from "@/lib/utils";
 
 interface MonthSelectorProps {
-  category: string;
   currentYearMonth: string;
+  onChange: (yearMonth: string) => void;
 }
 
-export function MonthSelector({ category, currentYearMonth }: MonthSelectorProps) {
-  const router = useRouter();
-  const searchParams = useSearchParams();
-
+export function MonthSelector({ currentYearMonth, onChange }: MonthSelectorProps) {
   const currentDate = parse(currentYearMonth, "yyyy-MM", new Date());
   const today = new Date();
   const currentMonthStr = getCurrentYearMonth();
@@ -24,16 +20,7 @@ export function MonthSelector({ category, currentYearMonth }: MonthSelectorProps
 
   const handleMonthChange = (newDate: Date) => {
     const newYearMonth = format(newDate, "yyyy-MM");
-    const params = new URLSearchParams(searchParams.toString());
-
-    if (newYearMonth === currentMonthStr) {
-      params.delete("year_month");
-    } else {
-      params.set("year_month", newYearMonth);
-    }
-
-    const queryString = params.toString();
-    router.push(`/${category}${queryString ? `?${queryString}` : ""}`);
+    onChange(newYearMonth);
   };
 
   const goToPreviousMonth = () => {

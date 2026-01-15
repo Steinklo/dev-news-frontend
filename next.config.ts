@@ -1,18 +1,10 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  output: "export",
   reactCompiler: true,
-  async rewrites() {
-    // Proxy API calls to backend (works in Azure SWA hybrid mode)
-    const apiDestination =
-      process.env.API_URL ?? "http://localhost:7020/api";
-
-    return [
-      {
-        source: "/api/:path*",
-        destination: `${apiDestination}/:path*`,
-      },
-    ];
+  images: {
+    unoptimized: true,
   },
 };
 
