@@ -50,7 +50,7 @@ function CategoryPageContent({
         </Link>
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <h1 className="font-mono text-xl text-[#33ff33]">
-            <span className="text-[#1a8c1a]">$</span> cat /news/{getCategoryDisplayName(category).toLowerCase().replace(/ & /g, "-").replace(/ /g, "-")}/*
+            <span className="text-[#1a8c1a]">$</span> cat /news/{getCategoryDisplayName(category).toLowerCase().replace(/ & /g, "-").replace(/ /g, "-")}{"/*"}
           </h1>
           <Suspense fallback={<Skeleton className="h-9 w-48" />}>
             <MonthSelector category={category} currentYearMonth={yearMonth} />
@@ -86,7 +86,7 @@ function CategoryPageContent({
           ) : (
             <>
               <p className="mb-4 font-mono text-xs text-[#1a8c1a]">
-                // Found {data.count} {data.count === 1 ? "entry" : "entries"}
+                {"// "}Found {data.count} {data.count === 1 ? "entry" : "entries"}
               </p>
               <div className="space-y-3">
                 {data.items.map((item) => (
