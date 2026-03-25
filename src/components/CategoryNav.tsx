@@ -4,14 +4,13 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
+  Brain,
+  Wrench,
+  Bot,
+  Server,
   Shield,
-  Code,
-  Package,
   Cloud,
-  GitBranch,
-  Cpu,
-  Gauge,
-  Terminal,
+  GitFork,
   type LucideIcon,
 } from "lucide-react";
 import { cn, getCategoryDisplayName } from "@/lib/utils";
@@ -19,14 +18,13 @@ import type { Category } from "@/lib/types";
 import { Skeleton } from "@/components/ui/skeleton";
 
 const categoryIcons: Record<string, LucideIcon> = {
+  AiModelsAndApis: Brain,
+  AiDeveloperTools: Wrench,
+  AgentsAndFrameworks: Bot,
+  AiInfrastructure: Server,
   SecurityAndVulnerabilities: Shield,
-  ProgrammingLanguagesAndRuntimes: Code,
-  FrameworksAndLibraries: Package,
   CloudAndInfrastructure: Cloud,
-  DevOpsCiCdObservabilityTesting: GitBranch,
-  AiMlDeveloperTooling: Cpu,
-  PerformanceAndArchitecturePatterns: Gauge,
-  DeveloperToolsIdesProductivity: Terminal,
+  OpenSourceAndCommunity: GitFork,
 };
 
 interface CategoryNavProps {
@@ -40,7 +38,7 @@ export function CategoryNav({ categories, isLoading }: CategoryNavProps) {
   if (isLoading) {
     return (
       <nav className="flex flex-wrap gap-2" aria-label="Categories loading">
-        {Array.from({ length: 8 }).map((_, i) => (
+        {Array.from({ length: 7 }).map((_, i) => (
           <Skeleton key={i} className="h-9 w-32" />
         ))}
       </nav>
@@ -50,7 +48,7 @@ export function CategoryNav({ categories, isLoading }: CategoryNavProps) {
   return (
     <nav className="flex flex-wrap gap-2" aria-label="News categories">
       {categories.map((category) => {
-        const Icon = categoryIcons[category.name] ?? Code;
+        const Icon = categoryIcons[category.name] ?? Brain;
         const isActive = pathname === `/${category.name}`;
 
         return (

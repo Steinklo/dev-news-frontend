@@ -5,14 +5,13 @@ import { CategoryPageContent } from "@/components/CategoryPageContent";
 // Pre-generate pages for all categories (required for static export)
 export function generateStaticParams() {
   return [
+    { category: "AiModelsAndApis" },
+    { category: "AiDeveloperTools" },
+    { category: "AgentsAndFrameworks" },
+    { category: "AiInfrastructure" },
     { category: "SecurityAndVulnerabilities" },
-    { category: "ProgrammingLanguagesAndRuntimes" },
-    { category: "FrameworksAndLibraries" },
     { category: "CloudAndInfrastructure" },
-    { category: "DevOpsCiCdObservabilityTesting" },
-    { category: "AiMlDeveloperTooling" },
-    { category: "PerformanceAndArchitecturePatterns" },
-    { category: "DeveloperToolsIdesProductivity" },
+    { category: "OpenSourceAndCommunity" },
   ];
 }
 

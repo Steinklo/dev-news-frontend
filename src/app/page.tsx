@@ -3,14 +3,13 @@
 
 import Link from "next/link";
 import {
+  Brain,
+  Wrench,
+  Bot,
+  Server,
   Shield,
-  Code,
-  Package,
   Cloud,
-  GitBranch,
-  Cpu,
-  Gauge,
-  Terminal,
+  GitFork,
   type LucideIcon,
 } from "lucide-react";
 import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
@@ -19,33 +18,23 @@ import { useCategories } from "@/hooks/useCategories";
 import { getCategoryDisplayName } from "@/lib/utils";
 
 const categoryIcons: Record<string, LucideIcon> = {
+  AiModelsAndApis: Brain,
+  AiDeveloperTools: Wrench,
+  AgentsAndFrameworks: Bot,
+  AiInfrastructure: Server,
   SecurityAndVulnerabilities: Shield,
-  ProgrammingLanguagesAndRuntimes: Code,
-  FrameworksAndLibraries: Package,
   CloudAndInfrastructure: Cloud,
-  DevOpsCiCdObservabilityTesting: GitBranch,
-  AiMlDeveloperTooling: Cpu,
-  PerformanceAndArchitecturePatterns: Gauge,
-  DeveloperToolsIdesProductivity: Terminal,
+  OpenSourceAndCommunity: GitFork,
 };
 
 const categoryDescriptions: Record<string, string> = {
-  SecurityAndVulnerabilities:
-    "CVEs, exploits, patches, supply-chain security",
-  ProgrammingLanguagesAndRuntimes:
-    "Language updates, runtime improvements",
-  FrameworksAndLibraries:
-    "Framework releases, library updates",
-  CloudAndInfrastructure:
-    "Cloud platforms, infrastructure tools",
-  DevOpsCiCdObservabilityTesting:
-    "CI/CD pipelines, observability, testing",
-  AiMlDeveloperTooling:
-    "AI dev tools, ML frameworks, assistants",
-  PerformanceAndArchitecturePatterns:
-    "Optimization, architecture patterns",
-  DeveloperToolsIdesProductivity:
-    "IDE updates, productivity tools",
+  AiModelsAndApis: "Model releases, API updates, benchmarks, fine-tuning",
+  AiDeveloperTools: "Coding assistants, IDE integrations, prompt tools",
+  AgentsAndFrameworks: "LLM frameworks, agent patterns, RAG, orchestration",
+  AiInfrastructure: "GPUs, training clusters, inference optimization, MLOps",
+  SecurityAndVulnerabilities: "AI security, prompt injection, model vulnerabilities",
+  CloudAndInfrastructure: "Cloud AI services, deployment, scaling",
+  OpenSourceAndCommunity: "Open-weight models, datasets, community projects",
 };
 
 export default function HomePage() {
@@ -65,7 +54,7 @@ export default function HomePage() {
 ║   ██████╔╝███████╗ ╚████╔╝ ██║ ╚████║███████╗╚███╔███╔╝███████║  ║
 ║   ╚═════╝ ╚══════╝  ╚═══╝  ╚═╝  ╚═══╝╚══════╝ ╚══╝╚══╝ ╚══════╝  ║
 ║                                                              ║
-║   > Developer news feed // High signal, zero noise           ║
+║   > AI developer news feed // High signal, zero noise           ║
 ║                                                              ║
 ╚══════════════════════════════════════════════════════════════╝`}
           </pre>
@@ -73,7 +62,7 @@ export default function HomePage() {
         <p className="font-mono text-sm text-[#1a8c1a]">
           <span className="text-[#33ff33]">$</span> cat /etc/motd
           <br />
-          <span className="text-[#33ff33]">&gt;</span> The freshest news for professional developers.
+          <span className="text-[#33ff33]">&gt;</span> The freshest AI engineering news for developers.
           <br />
           <span className="text-[#33ff33]">&gt;</span> Select a category to begin...
         </p>
@@ -92,7 +81,7 @@ export default function HomePage() {
 
         {isLoading && (
           <div className="grid gap-3 sm:grid-cols-2">
-            {Array.from({ length: 8 }).map((_, i) => (
+            {Array.from({ length: 7 }).map((_, i) => (
               <Skeleton key={i} className="h-24" />
             ))}
           </div>
@@ -101,7 +90,7 @@ export default function HomePage() {
         {data && (
           <div className="grid gap-3 sm:grid-cols-2">
             {data.categories.map((category, index) => {
-              const Icon = categoryIcons[category.name] ?? Code;
+              const Icon = categoryIcons[category.name] ?? Brain;
               const description =
                 categoryDescriptions[category.name] ?? "Latest news and updates";
 
