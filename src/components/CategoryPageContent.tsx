@@ -31,9 +31,9 @@ export function CategoryPageContent({ category }: CategoryPageContentProps) {
   const { data, isLoading, error } = useNews(category, yearMonth);
 
   return (
-    <div className="mx-auto max-w-5xl px-4 py-8">
-      <div className="mb-6">
-        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+    <div className="mx-auto max-w-5xl px-4 py-6">
+      <div className="mb-5">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <h1 className="text-xl font-semibold text-[#fafafa]">{getCategoryDisplayName(category)}</h1>
           <MonthSelector currentYearMonth={yearMonth} onChange={setYearMonth} />
         </div>
@@ -66,10 +66,10 @@ export function CategoryPageContent({ category }: CategoryPageContentProps) {
             </div>
           ) : (
             <>
-              <p className="mb-4 text-xs text-[#71717a]">
+              <p className="mb-3 text-xs text-[#71717a]">
                 {data.count} {data.count === 1 ? "article" : "articles"}
               </p>
-              <div className="space-y-3">
+              <div className="space-y-2">
                 {data.items.map((item) => (
                   <NewsCard key={item.id} item={item} />
                 ))}

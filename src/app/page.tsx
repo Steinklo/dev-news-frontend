@@ -4,10 +4,9 @@
 import { useQueries } from "@tanstack/react-query";
 import { NewsCard } from "@/components/NewsCard";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Badge } from "@/components/ui/badge";
 import { useCategories } from "@/hooks/useCategories";
 import { fetchNewsByCategory } from "@/lib/api";
-import { getCurrentYearMonth, getCategoryDisplayName } from "@/lib/utils";
+import { getCurrentYearMonth } from "@/lib/utils";
 import type { NewsItem } from "@/lib/types";
 
 function NewsCardSkeleton() {
@@ -15,7 +14,7 @@ function NewsCardSkeleton() {
     <div className="space-y-3 rounded-lg border border-[#262626] bg-[#141414] p-4">
       <Skeleton className="h-5 w-3/4" />
       <Skeleton className="h-4 w-1/2" />
-      <Skeleton className="h-20 w-full" />
+      <Skeleton className="h-16 w-full" />
       <div className="flex gap-2">
         <Skeleton className="h-5 w-16" />
         <Skeleton className="h-5 w-16" />
@@ -30,7 +29,6 @@ export default function HomePage() {
 
   const categories = categoriesData?.categories ?? [];
 
-  // Fetch news from all categories in parallel
   const newsQueries = useQueries({
     queries: categories.map((cat) => ({
       queryKey: ["news", cat.name, yearMonth],
@@ -45,6 +43,7 @@ export default function HomePage() {
       (q.data?.items ?? []).map((item) => ({
         ...item,
         _category: categories[i]?.name ?? "",
+        category: categories[i]?.name ?? item.category,
       }))
     )
     .sort(
@@ -53,20 +52,20 @@ export default function HomePage() {
     );
 
   return (
-    <div className="mx-auto max-w-5xl px-4 py-8">
-      <section className="mb-8">
-        <h1 className="text-2xl font-bold tracking-tight text-[#fafafa]">
+    <div className="mx-auto max-w-5xl px-4 py-6">
+      <div className="mb-5 flex items-baseline justify-between">
+        <h1 className="text-xl font-semibold tracking-tight text-[#fafafa]">
           Latest
         </h1>
-        <p className="mt-1 text-sm text-[#71717a]">
-          {allArticles.length > 0
-            ? `${allArticles.length} articles this month`
-            : "AI developer news. High signal, zero noise."}
-        </p>
-      </section>
+        {allArticles.length > 0 && (
+          <span className="text-xs text-[#71717a]">
+            {allArticles.length} articles
+          </span>
+        )}
+      </div>
 
       {isLoading && (
-        <div className="space-y-3">
+        <div className="space-y-2">
           {Array.from({ length: 5 }).map((_, i) => (
             <NewsCardSkeleton key={i} />
           ))}
@@ -83,16 +82,9 @@ export default function HomePage() {
       )}
 
       {!isLoading && allArticles.length > 0 && (
-        <div className="space-y-3">
+        <div className="space-y-2">
           {allArticles.map((item) => (
-            <div key={item.id}>
-              <div className="mb-1.5 ml-1">
-                <Badge variant="secondary" className="text-[10px]">
-                  {getCategoryDisplayName(item._category)}
-                </Badge>
-              </div>
-              <NewsCard item={item} />
-            </div>
+            <NewsCard key={item.id} item={item} showCategory />
           ))}
         </div>
       )}
