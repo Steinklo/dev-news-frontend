@@ -57,7 +57,7 @@ export default function HomePage() {
         )}
 
         {isLoading && (
-          <div className="grid gap-3 sm:grid-cols-2">
+          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {Array.from({ length: 7 }).map((_, i) => (
               <Skeleton key={i} className="h-24" />
             ))}
@@ -65,7 +65,7 @@ export default function HomePage() {
         )}
 
         {data && (
-          <div className="grid gap-3 sm:grid-cols-2">
+          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {data.categories.map((category) => {
               const Icon = categoryIcons[category.name] ?? Brain;
               const description =

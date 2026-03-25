@@ -40,11 +40,11 @@ export function MonthSelector({ currentYearMonth, onChange }: MonthSelectorProps
         size="icon"
         onClick={goToPreviousMonth}
         aria-label="Previous month"
-        className="h-7 w-7"
+        className="h-8 w-8"
       >
-        <ChevronLeft className="h-3 w-3" />
+        <ChevronLeft className="h-4 w-4" />
       </Button>
-      <span className="min-w-[100px] text-center text-xs text-[#fafafa]">
+      <span className="min-w-[110px] text-center text-sm font-medium text-[#fafafa]">
         {currentYearMonth}
       </span>
       <Button
@@ -53,9 +53,9 @@ export function MonthSelector({ currentYearMonth, onChange }: MonthSelectorProps
         onClick={goToNextMonth}
         disabled={!canGoNext}
         aria-label="Next month"
-        className="h-7 w-7"
+        className="h-8 w-8"
       >
-        <ChevronRight className="h-3 w-3" />
+        <ChevronRight className="h-4 w-4" />
       </Button>
       {!isCurrentMonth && (
         <Button

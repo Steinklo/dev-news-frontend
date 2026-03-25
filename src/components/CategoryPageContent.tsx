@@ -2,13 +2,12 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
-import { ArrowLeft } from "lucide-react";
 import { NewsCard } from "@/components/NewsCard";
+import { CategoryNav } from "@/components/CategoryNav";
 import { MonthSelector } from "@/components/MonthSelector";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Button } from "@/components/ui/button";
 import { useNews } from "@/hooks/useNews";
+import { useCategories } from "@/hooks/useCategories";
 import { getCurrentYearMonth, getCategoryDisplayName } from "@/lib/utils";
 
 function NewsCardSkeleton() {
@@ -32,16 +31,17 @@ interface CategoryPageContentProps {
 export function CategoryPageContent({ category }: CategoryPageContentProps) {
   const [yearMonth, setYearMonth] = useState(getCurrentYearMonth);
   const { data, isLoading, error } = useNews(category, yearMonth);
+  const { data: categoriesData, isLoading: categoriesLoading } = useCategories();
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-8">
       <div className="mb-6">
-        <Link href="/">
-          <Button variant="ghost" size="sm" className="mb-4 -ml-2">
-            <ArrowLeft className="mr-1 h-4 w-4" />
-            Back
-          </Button>
-        </Link>
+        <CategoryNav
+          categories={categoriesData?.categories ?? []}
+          isLoading={categoriesLoading}
+        />
+      </div>
+      <div className="mb-6">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <h1 className="text-xl font-semibold text-[#fafafa]">{getCategoryDisplayName(category)}</h1>
           <MonthSelector currentYearMonth={yearMonth} onChange={setYearMonth} />
