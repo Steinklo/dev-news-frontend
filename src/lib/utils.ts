@@ -30,8 +30,8 @@ export function formatYearMonth(yearMonth: string): string {
 
 export function getCategoryDisplayName(slug: string): string {
   const displayNames: Record<string, string> = {
-    AiModelsAndApis: "AI Models & APIs",
-    AiDeveloperTools: "AI Dev Tools",
+    AiModelsAndApis: "AI Models",
+    AiDeveloperTools: "AI Tools",
     AgentsAndFrameworks: "AI Agents & Frameworks",
     AiEngineering: "AI Engineering",
     AiSafetyAndSecurity: "AI Safety & Security",

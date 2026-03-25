@@ -18,8 +18,8 @@ import { useCategories } from "@/hooks/useCategories";
 
 // Shorter labels for the nav bar to fit in one line
 const navLabels: Record<string, string> = {
-  AiModelsAndApis: "AI Models & APIs",
-  AiDeveloperTools: "AI Dev Tools",
+  AiModelsAndApis: "AI Models",
+  AiDeveloperTools: "AI Tools",
   AgentsAndFrameworks: "AI Agents",
   AiEngineering: "AI Engineering",
   AiSafetyAndSecurity: "AI Safety",
@@ -46,7 +46,7 @@ export function HeaderNav() {
   return (
     <div className="border-b border-[#262626] bg-[#0a0a0a]/95 backdrop-blur-sm">
       <nav
-        className="no-scrollbar mx-auto flex max-w-5xl gap-1 overflow-x-auto px-4 py-2"
+        className="no-scrollbar mx-auto flex max-w-5xl justify-center gap-1 overflow-x-auto px-4 py-2"
         aria-label="News categories"
       >
         {data.categories.map((category) => {
