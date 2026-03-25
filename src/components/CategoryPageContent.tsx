@@ -2,18 +2,15 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
-import { ArrowLeft } from "lucide-react";
 import { NewsCard } from "@/components/NewsCard";
 import { MonthSelector } from "@/components/MonthSelector";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Button } from "@/components/ui/button";
 import { useNews } from "@/hooks/useNews";
 import { getCurrentYearMonth, getCategoryDisplayName } from "@/lib/utils";
 
 function NewsCardSkeleton() {
   return (
-    <div className="space-y-3 border border-[#1a4d1a] bg-[#0a0f0a] p-4">
+    <div className="space-y-3 rounded-lg border border-[#262626] bg-[#141414] p-4">
       <Skeleton className="h-5 w-3/4" />
       <Skeleton className="h-4 w-1/2" />
       <Skeleton className="h-20 w-full" />
@@ -34,25 +31,17 @@ export function CategoryPageContent({ category }: CategoryPageContentProps) {
   const { data, isLoading, error } = useNews(category, yearMonth);
 
   return (
-    <div className="mx-auto max-w-5xl px-4 py-8">
-      <div className="mb-6">
-        <Link href="/">
-          <Button variant="ghost" size="sm" className="mb-4 -ml-2">
-            <ArrowLeft className="mr-1 h-4 w-4" />
-            cd ..
-          </Button>
-        </Link>
-        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-          <h1 className="font-mono text-xl text-[#33ff33]">
-            <span className="text-[#1a8c1a]">$</span> cat /news/{getCategoryDisplayName(category).toLowerCase().replace(/ & /g, "-").replace(/ /g, "-")}{"/*"}
-          </h1>
+    <div className="mx-auto max-w-5xl px-4 py-6">
+      <div className="mb-5">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <h1 className="text-xl font-semibold text-[#fafafa]">{getCategoryDisplayName(category)}</h1>
           <MonthSelector currentYearMonth={yearMonth} onChange={setYearMonth} />
         </div>
       </div>
 
       {error && (
-        <div className="border border-red-500/50 bg-red-500/10 p-4 font-mono text-sm text-red-400">
-          <span className="text-red-500">[ERROR]</span> Failed to fetch news feed. Connection timeout.
+        <div className="rounded-lg border border-red-500/50 bg-red-500/10 p-4 text-sm text-red-400">
+          Failed to fetch news feed. Please try again later.
         </div>
       )}
 
@@ -67,27 +56,24 @@ export function CategoryPageContent({ category }: CategoryPageContentProps) {
       {data && (
         <>
           {data.items.length === 0 ? (
-            <div className="border border-[#1a4d1a] bg-[#0a0f0a] p-8 text-center font-mono">
-              <p className="text-[#1a8c1a]">
-                <span className="text-[#33ff33]">&gt;</span> No entries found for this period.
+            <div className="rounded-lg border border-[#262626] bg-[#141414] p-8 text-center">
+              <p className="text-[#a1a1aa]">
+                No entries found for this period.
               </p>
-              <p className="mt-2 text-xs text-[#1a8c1a]">
+              <p className="mt-2 text-xs text-[#71717a]">
                 Try selecting a different month.
               </p>
             </div>
           ) : (
             <>
-              <p className="mb-4 font-mono text-xs text-[#1a8c1a]">
-                {"// "}Found {data.count} {data.count === 1 ? "entry" : "entries"}
+              <p className="mb-3 text-xs text-[#71717a]">
+                {data.count} {data.count === 1 ? "article" : "articles"}
               </p>
-              <div className="space-y-3">
+              <div className="space-y-2">
                 {data.items.map((item) => (
                   <NewsCard key={item.id} item={item} />
                 ))}
               </div>
-              <p className="mt-6 font-mono text-xs text-[#1a8c1a]">
-                <span className="text-[#33ff33]">&gt;</span> EOF
-              </p>
             </>
           )}
         </>

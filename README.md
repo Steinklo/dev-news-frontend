@@ -1,36 +1,99 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# DevNews Frontend
+
+Modern dark-themed AI developer news reader built with Next.js. Displays curated, AI-summarized tech news with a clean developer aesthetic.
+
+## Tech Stack
+
+- **Next.js 16** (App Router, React 19, React Compiler)
+- **TypeScript** (strict mode)
+- **Tailwind CSS v4** + **shadcn/ui** components
+- **TanStack Query v5** — data fetching and caching
+- **Static export** — deployed to Azure Static Web Apps
+- **lucide-react** (icons), **sonner** (toasts), **date-fns** (dates)
+
+## Prerequisites
+
+- [Node.js 20+](https://nodejs.org/)
+- Backend API running (default: `http://localhost:7020/api/v1`)
 
 ## Getting Started
 
-First, run the development server:
-
 ```bash
+# Install dependencies
+npm install
+
+# Start dev server
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+
+# Lint
+npm run lint
+
+# Build static export
+npm run build
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Environment Variables
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+| Variable | Description | Default |
+|---|---|---|
+| `NEXT_PUBLIC_API_URL` | Backend API base URL | `http://localhost:7020/api/v1` |
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Project Structure
 
-## Learn More
+```
+src/
+├── app/
+│   ├── layout.tsx              # Root layout (providers, Geist fonts)
+│   ├── page.tsx                # Home page
+│   └── [category]/page.tsx     # Dynamic category route
+├── components/
+│   ├── ui/                     # shadcn/ui (Badge, Button, Card, Skeleton, Tabs)
+│   ├── CategoryNav.tsx         # Category tab navigation
+│   ├── CategoryPageContent.tsx # Category page with news list
+│   ├── MonthSelector.tsx       # Year-month picker
+│   ├── NewsCard.tsx            # Single news item card
+│   └── providers.tsx           # TanStack Query provider
+├── hooks/
+│   ├── useCategories.ts        # Categories query hook
+│   └── useNews.ts              # News by category query hook
+└── lib/
+    ├── api.ts                  # Typed fetch helpers
+    ├── queryKeys.ts            # TanStack Query key factories
+    ├── types.ts                # API types (NewsItem, Category, etc.)
+    └── utils.ts                # cn() helper, date formatting
+```
 
-To learn more about Next.js, take a look at the following resources:
+## Design System
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+**Modern dark developer aesthetic:**
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- **Colors**: Dark grays (`#0a0a0a` bg, `#141414` cards), white text (`#fafafa`), blue accents (`#3b82f6`)
+- **Fonts**: Geist Sans (body), Geist Mono (metadata/code)
+- **Layout**: Rounded corners, subtle borders, dark mode only
+- **Severity badges**: Critical (red), High (orange), Medium (yellow), Low (green)
 
-## Deploy on Vercel
+## API Integration
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Consumes the DevNews backend API:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+| Endpoint | Description |
+|---|---|
+| `GET /news/categories` | List all categories |
+| `GET /news/category/{category}?year_month=YYYY-MM` | News by category and month |
+
+TanStack Query caching: `staleTime` 10-15 min, `gcTime` 1 hour.
+
+## CI/CD
+
+- **Deploy** (push to `main`): `npm ci` → lint → build → deploy to Azure Static Web Apps (dev → prod)
+- Static export (`output: "export"`) — pre-rendered HTML served via CDN
+
+## Categories
+
+1. AiModelsAndApis
+2. AiDeveloperTools
+3. AgentsAndFrameworks
+4. AiEngineering
+5. AiSafetyAndSecurity
+6. InfrastructureAndCloud
+7. OpenSourceAndCommunity

@@ -1,135 +1,93 @@
 // src/app/page.tsx
 "use client";
 
-import Link from "next/link";
-import {
-  Shield,
-  Code,
-  Package,
-  Cloud,
-  GitBranch,
-  Cpu,
-  Gauge,
-  Terminal,
-  type LucideIcon,
-} from "lucide-react";
-import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { useQueries } from "@tanstack/react-query";
+import { NewsCard } from "@/components/NewsCard";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useCategories } from "@/hooks/useCategories";
-import { getCategoryDisplayName } from "@/lib/utils";
+import { fetchNewsByCategory } from "@/lib/api";
+import { getCurrentYearMonth } from "@/lib/utils";
+import type { NewsItem } from "@/lib/types";
 
-const categoryIcons: Record<string, LucideIcon> = {
-  SecurityAndVulnerabilities: Shield,
-  ProgrammingLanguagesAndRuntimes: Code,
-  FrameworksAndLibraries: Package,
-  CloudAndInfrastructure: Cloud,
-  DevOpsCiCdObservabilityTesting: GitBranch,
-  AiMlDeveloperTooling: Cpu,
-  PerformanceAndArchitecturePatterns: Gauge,
-  DeveloperToolsIdesProductivity: Terminal,
-};
-
-const categoryDescriptions: Record<string, string> = {
-  SecurityAndVulnerabilities:
-    "CVEs, exploits, patches, supply-chain security",
-  ProgrammingLanguagesAndRuntimes:
-    "Language updates, runtime improvements",
-  FrameworksAndLibraries:
-    "Framework releases, library updates",
-  CloudAndInfrastructure:
-    "Cloud platforms, infrastructure tools",
-  DevOpsCiCdObservabilityTesting:
-    "CI/CD pipelines, observability, testing",
-  AiMlDeveloperTooling:
-    "AI dev tools, ML frameworks, assistants",
-  PerformanceAndArchitecturePatterns:
-    "Optimization, architecture patterns",
-  DeveloperToolsIdesProductivity:
-    "IDE updates, productivity tools",
-};
+function NewsCardSkeleton() {
+  return (
+    <div className="space-y-3 rounded-lg border border-[#262626] bg-[#141414] p-4">
+      <Skeleton className="h-5 w-3/4" />
+      <Skeleton className="h-4 w-1/2" />
+      <Skeleton className="h-16 w-full" />
+      <div className="flex gap-2">
+        <Skeleton className="h-5 w-16" />
+        <Skeleton className="h-5 w-16" />
+      </div>
+    </div>
+  );
+}
 
 export default function HomePage() {
-  const { data, isLoading, error } = useCategories();
+  const yearMonth = getCurrentYearMonth();
+  const { data: categoriesData } = useCategories();
+
+  const categories = categoriesData?.categories ?? [];
+
+  const newsQueries = useQueries({
+    queries: categories.map((cat) => ({
+      queryKey: ["news", cat.name, yearMonth],
+      queryFn: () => fetchNewsByCategory(cat.name, yearMonth),
+      enabled: categories.length > 0,
+    })),
+  });
+
+  const isLoading = newsQueries.some((q) => q.isLoading);
+  const allArticles: (NewsItem & { _category: string })[] = newsQueries
+    .flatMap((q, i) =>
+      (q.data?.items ?? []).map((item) => ({
+        ...item,
+        _category: categories[i]?.name ?? "",
+        category: categories[i]?.name ?? item.category,
+      }))
+    )
+    .sort(
+      (a, b) =>
+        new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+    );
 
   return (
-    <div className="mx-auto max-w-5xl px-4 py-8">
-      <section className="mb-10">
-        <div className="mb-6 border border-[#1a4d1a] bg-[#0a0f0a] p-4">
-          <pre className="font-mono text-xs text-[#1a8c1a] sm:text-sm">
-{`╔══════════════════════════════════════════════════════════════╗
-║                                                              ║
-║   ██████╗ ███████╗██╗   ██╗███╗   ██╗███████╗██╗    ██╗███████╗  ║
-║   ██╔══██╗██╔════╝██║   ██║████╗  ██║██╔════╝██║    ██║██╔════╝  ║
-║   ██║  ██║█████╗  ██║   ██║██╔██╗ ██║█████╗  ██║ █╗ ██║███████╗  ║
-║   ██║  ██║██╔══╝  ╚██╗ ██╔╝██║╚██╗██║██╔══╝  ██║███╗██║╚════██║  ║
-║   ██████╔╝███████╗ ╚████╔╝ ██║ ╚████║███████╗╚███╔███╔╝███████║  ║
-║   ╚═════╝ ╚══════╝  ╚═══╝  ╚═╝  ╚═══╝╚══════╝ ╚══╝╚══╝ ╚══════╝  ║
-║                                                              ║
-║   > Developer news feed // High signal, zero noise           ║
-║                                                              ║
-╚══════════════════════════════════════════════════════════════╝`}
-          </pre>
+    <div className="mx-auto max-w-5xl px-4 py-6">
+      <div className="mb-5 flex items-baseline justify-between">
+        <h1 className="text-xl font-semibold tracking-tight text-[#fafafa]">
+          Latest
+        </h1>
+        {allArticles.length > 0 && (
+          <span className="text-xs text-[#71717a]">
+            {allArticles.length} articles
+          </span>
+        )}
+      </div>
+
+      {isLoading && (
+        <div className="space-y-2">
+          {Array.from({ length: 5 }).map((_, i) => (
+            <NewsCardSkeleton key={i} />
+          ))}
         </div>
-        <p className="font-mono text-sm text-[#1a8c1a]">
-          <span className="text-[#33ff33]">$</span> cat /etc/motd
-          <br />
-          <span className="text-[#33ff33]">&gt;</span> The freshest news for professional developers.
-          <br />
-          <span className="text-[#33ff33]">&gt;</span> Select a category to begin...
-        </p>
-      </section>
+      )}
 
-      <section>
-        <h2 className="mb-4 font-mono text-sm text-[#33ff33]">
-          <span className="text-[#1a8c1a]">$</span> ls -la /categories/
-        </h2>
+      {!isLoading && allArticles.length === 0 && (
+        <div className="rounded-lg border border-[#262626] bg-[#141414] p-8 text-center">
+          <p className="text-[#a1a1aa]">No articles yet this month.</p>
+          <p className="mt-2 text-xs text-[#71717a]">
+            Check back soon — new articles are curated daily.
+          </p>
+        </div>
+      )}
 
-        {error && (
-          <div className="border border-red-500/50 bg-red-500/10 p-4 font-mono text-sm text-red-400">
-            <span className="text-red-500">[ERROR]</span> Failed to load categories. Connection refused.
-          </div>
-        )}
-
-        {isLoading && (
-          <div className="grid gap-3 sm:grid-cols-2">
-            {Array.from({ length: 8 }).map((_, i) => (
-              <Skeleton key={i} className="h-24" />
-            ))}
-          </div>
-        )}
-
-        {data && (
-          <div className="grid gap-3 sm:grid-cols-2">
-            {data.categories.map((category, index) => {
-              const Icon = categoryIcons[category.name] ?? Code;
-              const description =
-                categoryDescriptions[category.name] ?? "Latest news and updates";
-
-              return (
-                <Link key={category.id} href={`/${category.name}`}>
-                  <Card className="group h-full">
-                    <CardHeader className="p-4">
-                      <div className="flex items-center gap-3">
-                        <Icon
-                          className="h-4 w-4 text-[#33ff33]"
-                          aria-hidden="true"
-                        />
-                        <CardTitle className="flex items-center gap-2 text-sm">
-                          <span className="text-[#1a8c1a]">{String(index).padStart(2, "0")}</span>
-                          {getCategoryDisplayName(category.name)}
-                        </CardTitle>
-                      </div>
-                      <CardDescription className="mt-1 pl-7 text-xs">
-                        {description}
-                      </CardDescription>
-                    </CardHeader>
-                  </Card>
-                </Link>
-              );
-            })}
-          </div>
-        )}
-      </section>
+      {!isLoading && allArticles.length > 0 && (
+        <div className="space-y-2">
+          {allArticles.map((item) => (
+            <NewsCard key={item.id} item={item} showCategory />
+          ))}
+        </div>
+      )}
     </div>
   );
 }

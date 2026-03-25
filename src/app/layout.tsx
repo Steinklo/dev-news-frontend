@@ -1,11 +1,16 @@
 // src/app/layout.tsx
 
 import type { Metadata } from "next";
-import { Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono } from "next/font/google";
 import Link from "next/link";
-import { Terminal } from "lucide-react";
 import { Providers } from "@/components/providers";
+import { HeaderNav } from "@/components/HeaderNav";
 import "./globals.css";
+
+const geistSans = Geist({
+  variable: "--font-geist-sans",
+  subsets: ["latin"],
+});
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
@@ -13,7 +18,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "DevNews // Developer News Terminal",
+  title: "DevNews - AI Developer News",
   description:
     "The freshest, most relevant news and updates for professional software developers. High signal, zero noise.",
 };
@@ -26,30 +31,30 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${geistMono.variable} min-h-screen bg-[#0d0d0d] font-mono antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} min-h-screen bg-[#0a0a0a] font-sans text-[#fafafa] antialiased`}
       >
         <Providers>
           <div className="flex min-h-screen flex-col">
-            <header className="sticky top-0 z-40 border-b border-[#1a4d1a] bg-[#0d0d0d]/95 backdrop-blur-sm">
-              <div className="mx-auto flex h-12 max-w-5xl items-center justify-between px-4">
-                <Link
-                  href="/"
-                  className="flex items-center gap-2 font-mono text-[#33ff33] transition-all hover:text-[#66ff66]"
-                >
-                  <Terminal className="h-4 w-4" aria-hidden="true" />
-                  <span className="tracking-wider">devnews</span>
-                  <span className="text-[#1a8c1a]">~$</span>
-                  <span className="cursor-blink" />
-                </Link>
-                <div className="text-xs text-[#1a8c1a]">
-                  [{new Date().toISOString().split("T")[0]}]
+            <header className="sticky top-0 z-40 bg-[#0a0a0a]/95 backdrop-blur-sm">
+              <div className="border-b border-[#262626]">
+                <div className="mx-auto flex h-12 max-w-5xl items-center justify-between px-4">
+                  <Link
+                    href="/"
+                    className="font-semibold text-[#fafafa] transition-colors hover:text-[#3b82f6]"
+                  >
+                    DevNews
+                  </Link>
+                  <div className="text-xs text-[#71717a]">
+                    {new Date().toISOString().split("T")[0]}
+                  </div>
                 </div>
               </div>
+              <HeaderNav />
             </header>
             <main className="flex-1">{children}</main>
-            <footer className="border-t border-[#1a4d1a] py-4">
-              <div className="mx-auto max-w-5xl px-4 text-center font-mono text-xs text-[#1a8c1a]">
-                <span className="text-[#33ff33]">&gt;</span> devnews v1.0.0 // high signal, zero noise
+            <footer className="border-t border-[#262626] py-4">
+              <div className="mx-auto max-w-5xl px-4 text-center text-xs text-[#71717a]">
+                DevNews
               </div>
             </footer>
           </div>

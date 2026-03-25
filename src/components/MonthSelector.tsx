@@ -35,17 +35,16 @@ export function MonthSelector({ currentYearMonth, onChange }: MonthSelectorProps
 
   return (
     <div className="flex items-center gap-1 font-mono">
-      <span className="text-xs text-[#1a8c1a]">[</span>
       <Button
         variant="ghost"
         size="icon"
         onClick={goToPreviousMonth}
         aria-label="Previous month"
-        className="h-7 w-7"
+        className="h-8 w-8"
       >
-        <ChevronLeft className="h-3 w-3" />
+        <ChevronLeft className="h-4 w-4" />
       </Button>
-      <span className="min-w-[100px] text-center text-xs text-[#33ff33]">
+      <span className="min-w-[110px] text-center text-sm font-medium text-[#fafafa]">
         {currentYearMonth}
       </span>
       <Button
@@ -54,11 +53,10 @@ export function MonthSelector({ currentYearMonth, onChange }: MonthSelectorProps
         onClick={goToNextMonth}
         disabled={!canGoNext}
         aria-label="Next month"
-        className="h-7 w-7"
+        className="h-8 w-8"
       >
-        <ChevronRight className="h-3 w-3" />
+        <ChevronRight className="h-4 w-4" />
       </Button>
-      <span className="text-xs text-[#1a8c1a]">]</span>
       {!isCurrentMonth && (
         <Button
           variant="outline"
@@ -66,7 +64,7 @@ export function MonthSelector({ currentYearMonth, onChange }: MonthSelectorProps
           onClick={() => handleMonthChange(today)}
           className="ml-2 h-7 text-xs"
         >
-          --now
+          Current
         </Button>
       )}
     </div>
