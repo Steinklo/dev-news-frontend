@@ -13,8 +13,19 @@ import {
   GitFork,
   type LucideIcon,
 } from "lucide-react";
-import { cn, getCategoryDisplayName } from "@/lib/utils";
+import { cn } from "@/lib/utils";
 import { useCategories } from "@/hooks/useCategories";
+
+// Shorter labels for the nav bar to fit in one line
+const navLabels: Record<string, string> = {
+  AiModelsAndApis: "Models & APIs",
+  AiDeveloperTools: "Dev Tools",
+  AgentsAndFrameworks: "Agents",
+  AiEngineering: "Engineering",
+  AiSafetyAndSecurity: "Safety & Security",
+  InfrastructureAndCloud: "Infra & Cloud",
+  OpenSourceAndCommunity: "Open Source",
+};
 
 const categoryIcons: Record<string, LucideIcon> = {
   AiModelsAndApis: Brain,
@@ -57,7 +68,7 @@ export function HeaderNav() {
               aria-current={isActive ? "page" : undefined}
             >
               <Icon className="h-3.5 w-3.5" aria-hidden="true" />
-              <span>{getCategoryDisplayName(category.name)}</span>
+              <span>{navLabels[category.name] ?? category.name}</span>
             </Link>
           );
         })}
