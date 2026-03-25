@@ -33,9 +33,9 @@ export function getCategoryDisplayName(slug: string): string {
     AiModelsAndApis: "AI Models & APIs",
     AiDeveloperTools: "AI Developer Tools",
     AgentsAndFrameworks: "Agents & Frameworks",
-    AiInfrastructure: "AI Infrastructure",
-    SecurityAndVulnerabilities: "Security & Vulnerabilities",
-    CloudAndInfrastructure: "Cloud & Infrastructure",
+    AiEngineering: "AI Engineering",
+    AiSafetyAndSecurity: "AI Safety & Security",
+    InfrastructureAndCloud: "Infrastructure & Cloud",
     OpenSourceAndCommunity: "Open Source & Community",
   };
   return displayNames[slug] ?? slug;

@@ -1,6 +1,6 @@
 # DevNews Frontend
 
-Retro terminal-themed developer news reader built with Next.js. Displays curated, AI-summarized tech news with a CRT monitor aesthetic (phosphor green on black, scanlines, text glow).
+Modern dark-themed AI developer news reader built with Next.js. Displays curated, AI-summarized tech news with a clean developer aesthetic.
 
 ## Tech Stack
 
@@ -43,7 +43,7 @@ npm run build
 ```
 src/
 ├── app/
-│   ├── layout.tsx              # Root layout (providers, VT323 font, CRT effects)
+│   ├── layout.tsx              # Root layout (providers, Geist fonts)
 │   ├── page.tsx                # Home page
 │   └── [category]/page.tsx     # Dynamic category route
 ├── components/
@@ -65,13 +65,12 @@ src/
 
 ## Design System
 
-**Retro CRT terminal aesthetic:**
+**Modern dark developer aesthetic:**
 
-- **Colors**: Phosphor green (`#00FF41`) on black (`#000000`), no other colors
-- **Font**: VT323 monospace (Google Fonts)
-- **Effects**: Scanlines, vignette, text glow (`text-shadow`)
-- **Layout**: No rounded corners, no gradients, dark mode only
-- **Severity badges**: Critical (red-orange), High (orange), Medium (yellow-green), Low (dim green)
+- **Colors**: Dark grays (`#0a0a0a` bg, `#141414` cards), white text (`#fafafa`), blue accents (`#3b82f6`)
+- **Fonts**: Geist Sans (body), Geist Mono (metadata/code)
+- **Layout**: Rounded corners, subtle borders, dark mode only
+- **Severity badges**: Critical (red), High (orange), Medium (yellow), Low (green)
 
 ## API Integration
 
@@ -91,11 +90,10 @@ TanStack Query caching: `staleTime` 10-15 min, `gcTime` 1 hour.
 
 ## Categories
 
-1. SecurityAndVulnerabilities
-2. ProgrammingLanguagesAndRuntimes
-3. FrameworksAndLibraries
-4. CloudAndInfrastructure
-5. DevOpsCiCdObservabilityTesting
-6. AiMlDeveloperTooling
-7. PerformanceAndArchitecturePatterns
-8. DeveloperToolsIdesProductivity
+1. AiModelsAndApis
+2. AiDeveloperTools
+3. AgentsAndFrameworks
+4. AiEngineering
+5. AiSafetyAndSecurity
+6. InfrastructureAndCloud
+7. OpenSourceAndCommunity

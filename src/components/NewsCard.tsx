@@ -19,7 +19,7 @@ function getSeverityVariant(severity: string | undefined) {
     case "Medium":
       return "border-yellow-500 bg-yellow-500/20 text-yellow-400";
     case "Low":
-      return "border-[#33ff33] bg-[#33ff33]/10 text-[#33ff33]";
+      return "border-green-500 bg-green-500/20 text-green-400";
     default:
       return "";
   }
@@ -31,12 +31,11 @@ export function NewsCard({ item }: NewsCardProps) {
       <CardHeader className="pb-3">
         <div className="flex items-start justify-between gap-4">
           <CardTitle className="text-sm leading-snug">
-            <span className="text-[#1a8c1a]">&gt; </span>
             <a
               href={item.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-start gap-1.5 text-[#33ff33] hover:text-[#66ff66] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#33ff33]"
+              className="inline-flex items-start gap-1.5 text-[#fafafa] hover:text-[#3b82f6] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#3b82f6]"
             >
               {item.title}
               <ExternalLink
@@ -54,8 +53,8 @@ export function NewsCard({ item }: NewsCardProps) {
             </Badge>
           )}
         </div>
-        <div className="flex items-center gap-2 font-mono text-xs text-[#1a8c1a]">
-          <span>[{item.source}]</span>
+        <div className="flex items-center gap-2 font-mono text-xs text-[#71717a]">
+          <span>{item.source}</span>
           {item.author && (
             <>
               <span aria-hidden="true">/</span>
@@ -67,7 +66,7 @@ export function NewsCard({ item }: NewsCardProps) {
         </div>
       </CardHeader>
       <CardContent className="space-y-3">
-        <p className="font-mono text-sm leading-relaxed text-[#1a8c1a]">
+        <p className="text-sm leading-relaxed text-[#a1a1aa]">
           {item.summary}
         </p>
         {item.tags.length > 0 && (

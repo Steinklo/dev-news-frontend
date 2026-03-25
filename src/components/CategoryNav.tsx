@@ -7,9 +7,9 @@ import {
   Brain,
   Wrench,
   Bot,
+  FlaskConical,
+  ShieldAlert,
   Server,
-  Shield,
-  Cloud,
   GitFork,
   type LucideIcon,
 } from "lucide-react";
@@ -21,9 +21,9 @@ const categoryIcons: Record<string, LucideIcon> = {
   AiModelsAndApis: Brain,
   AiDeveloperTools: Wrench,
   AgentsAndFrameworks: Bot,
-  AiInfrastructure: Server,
-  SecurityAndVulnerabilities: Shield,
-  CloudAndInfrastructure: Cloud,
+  AiEngineering: FlaskConical,
+  AiSafetyAndSecurity: ShieldAlert,
+  InfrastructureAndCloud: Server,
   OpenSourceAndCommunity: GitFork,
 };
 
@@ -57,11 +57,11 @@ export function CategoryNav({ categories, isLoading }: CategoryNavProps) {
             href={`/${category.name}`}
             className={cn(
               "inline-flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium transition-colors",
-              "hover:bg-zinc-100 dark:hover:bg-zinc-800",
-              "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-950 dark:focus-visible:ring-zinc-300",
+              "hover:bg-[#262626]",
+              "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#3b82f6]",
               isActive
-                ? "bg-zinc-900 text-zinc-50 hover:bg-zinc-900 dark:bg-zinc-50 dark:text-zinc-900 dark:hover:bg-zinc-50"
-                : "text-zinc-600 dark:text-zinc-400"
+                ? "bg-[#262626] text-[#fafafa]"
+                : "text-[#a1a1aa]"
             )}
             aria-current={isActive ? "page" : undefined}
           >

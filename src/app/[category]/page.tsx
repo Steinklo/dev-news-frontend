@@ -8,9 +8,9 @@ export function generateStaticParams() {
     { category: "AiModelsAndApis" },
     { category: "AiDeveloperTools" },
     { category: "AgentsAndFrameworks" },
-    { category: "AiInfrastructure" },
-    { category: "SecurityAndVulnerabilities" },
-    { category: "CloudAndInfrastructure" },
+    { category: "AiEngineering" },
+    { category: "AiSafetyAndSecurity" },
+    { category: "InfrastructureAndCloud" },
     { category: "OpenSourceAndCommunity" },
   ];
 }

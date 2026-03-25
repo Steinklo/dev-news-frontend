@@ -6,9 +6,9 @@ import {
   Brain,
   Wrench,
   Bot,
+  FlaskConical,
+  ShieldAlert,
   Server,
-  Shield,
-  Cloud,
   GitFork,
   type LucideIcon,
 } from "lucide-react";
@@ -21,9 +21,9 @@ const categoryIcons: Record<string, LucideIcon> = {
   AiModelsAndApis: Brain,
   AiDeveloperTools: Wrench,
   AgentsAndFrameworks: Bot,
-  AiInfrastructure: Server,
-  SecurityAndVulnerabilities: Shield,
-  CloudAndInfrastructure: Cloud,
+  AiEngineering: FlaskConical,
+  AiSafetyAndSecurity: ShieldAlert,
+  InfrastructureAndCloud: Server,
   OpenSourceAndCommunity: GitFork,
 };
 
@@ -31,9 +31,9 @@ const categoryDescriptions: Record<string, string> = {
   AiModelsAndApis: "Model releases, API updates, benchmarks, fine-tuning",
   AiDeveloperTools: "Coding assistants, IDE integrations, prompt tools",
   AgentsAndFrameworks: "LLM frameworks, agent patterns, RAG, orchestration",
-  AiInfrastructure: "GPUs, training clusters, inference optimization, MLOps",
-  SecurityAndVulnerabilities: "AI security, prompt injection, model vulnerabilities",
-  CloudAndInfrastructure: "Cloud AI services, deployment, scaling",
+  AiEngineering: "Prompt engineering, evals, guardrails, patterns",
+  AiSafetyAndSecurity: "Prompt injection, jailbreaks, alignment, CVEs",
+  InfrastructureAndCloud: "GPU, serving, MLOps, cloud AI services",
   OpenSourceAndCommunity: "Open-weight models, datasets, community projects",
 };
 
@@ -43,39 +43,16 @@ export default function HomePage() {
   return (
     <div className="mx-auto max-w-5xl px-4 py-8">
       <section className="mb-10">
-        <div className="mb-6 border border-[#1a4d1a] bg-[#0a0f0a] p-4">
-          <pre className="font-mono text-xs text-[#1a8c1a] sm:text-sm">
-{`╔══════════════════════════════════════════════════════════════╗
-║                                                              ║
-║   ██████╗ ███████╗██╗   ██╗███╗   ██╗███████╗██╗    ██╗███████╗  ║
-║   ██╔══██╗██╔════╝██║   ██║████╗  ██║██╔════╝██║    ██║██╔════╝  ║
-║   ██║  ██║█████╗  ██║   ██║██╔██╗ ██║█████╗  ██║ █╗ ██║███████╗  ║
-║   ██║  ██║██╔══╝  ╚██╗ ██╔╝██║╚██╗██║██╔══╝  ██║███╗██║╚════██║  ║
-║   ██████╔╝███████╗ ╚████╔╝ ██║ ╚████║███████╗╚███╔███╔╝███████║  ║
-║   ╚═════╝ ╚══════╝  ╚═══╝  ╚═╝  ╚═══╝╚══════╝ ╚══╝╚══╝ ╚══════╝  ║
-║                                                              ║
-║   > AI developer news feed // High signal, zero noise           ║
-║                                                              ║
-╚══════════════════════════════════════════════════════════════╝`}
-          </pre>
-        </div>
-        <p className="font-mono text-sm text-[#1a8c1a]">
-          <span className="text-[#33ff33]">$</span> cat /etc/motd
-          <br />
-          <span className="text-[#33ff33]">&gt;</span> The freshest AI engineering news for developers.
-          <br />
-          <span className="text-[#33ff33]">&gt;</span> Select a category to begin...
-        </p>
+        <h1 className="text-3xl font-bold tracking-tight text-[#fafafa]">DevNews</h1>
+        <p className="mt-2 text-[#a1a1aa]">AI developer news. High signal, zero noise.</p>
       </section>
 
       <section>
-        <h2 className="mb-4 font-mono text-sm text-[#33ff33]">
-          <span className="text-[#1a8c1a]">$</span> ls -la /categories/
-        </h2>
+        <h2 className="mb-4 text-sm font-medium uppercase tracking-wide text-[#71717a]">Categories</h2>
 
         {error && (
-          <div className="border border-red-500/50 bg-red-500/10 p-4 font-mono text-sm text-red-400">
-            <span className="text-red-500">[ERROR]</span> Failed to load categories. Connection refused.
+          <div className="rounded-lg border border-red-500/50 bg-red-500/10 p-4 text-sm text-red-400">
+            Failed to load categories. Please try again later.
           </div>
         )}
 
@@ -89,7 +66,7 @@ export default function HomePage() {
 
         {data && (
           <div className="grid gap-3 sm:grid-cols-2">
-            {data.categories.map((category, index) => {
+            {data.categories.map((category) => {
               const Icon = categoryIcons[category.name] ?? Brain;
               const description =
                 categoryDescriptions[category.name] ?? "Latest news and updates";
@@ -100,11 +77,10 @@ export default function HomePage() {
                     <CardHeader className="p-4">
                       <div className="flex items-center gap-3">
                         <Icon
-                          className="h-4 w-4 text-[#33ff33]"
+                          className="h-4 w-4 text-[#3b82f6]"
                           aria-hidden="true"
                         />
-                        <CardTitle className="flex items-center gap-2 text-sm">
-                          <span className="text-[#1a8c1a]">{String(index).padStart(2, "0")}</span>
+                        <CardTitle className="text-sm text-[#fafafa]">
                           {getCategoryDisplayName(category.name)}
                         </CardTitle>
                       </div>

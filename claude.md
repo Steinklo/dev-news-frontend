@@ -1,6 +1,6 @@
 # DevNews Frontend
 
-Next.js 16 static site for an AI developer news reader with retro CRT terminal aesthetic. Consumes the DevNews backend API.
+Next.js 16 static site for an AI developer news reader with a modern dark aesthetic. Consumes the DevNews backend API.
 
 ## Commands
 
@@ -48,9 +48,12 @@ interface NewsItem {
 
 ## Design Conventions
 
-- **CRT terminal theme**: green-on-black only, VT323 font, scanlines, text glow, no rounded corners
+- **Modern dark theme**: dark gray background (#0a0a0a), white text (#fafafa), blue accents (#3b82f6)
+- Color palette: Card (#141414), Border (#262626), Border-hover (#404040), Text-secondary (#a1a1aa), Text-muted (#71717a)
 - Dark mode only — no light mode toggle
-- Severity colors: Critical (red-orange #FF3300), High (orange), Medium (yellow-green), Low (dim green)
+- Geist Sans for body text, Geist Mono for metadata only
+- Rounded corners (rounded-lg for cards, rounded-md for badges/buttons)
+- Severity colors: Critical (red), High (orange), Medium (yellow), Low (green)
 - Server Components by default, `"use client"` only when hooks/state needed
 - PascalCase components, kebab-case folders
 - External links: `target="_blank" rel="noopener noreferrer"`
