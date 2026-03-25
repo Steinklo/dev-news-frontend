@@ -3,11 +3,9 @@
 
 import { useState } from "react";
 import { NewsCard } from "@/components/NewsCard";
-import { CategoryNav } from "@/components/CategoryNav";
 import { MonthSelector } from "@/components/MonthSelector";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useNews } from "@/hooks/useNews";
-import { useCategories } from "@/hooks/useCategories";
 import { getCurrentYearMonth, getCategoryDisplayName } from "@/lib/utils";
 
 function NewsCardSkeleton() {
@@ -31,16 +29,9 @@ interface CategoryPageContentProps {
 export function CategoryPageContent({ category }: CategoryPageContentProps) {
   const [yearMonth, setYearMonth] = useState(getCurrentYearMonth);
   const { data, isLoading, error } = useNews(category, yearMonth);
-  const { data: categoriesData, isLoading: categoriesLoading } = useCategories();
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-8">
-      <div className="mb-6">
-        <CategoryNav
-          categories={categoriesData?.categories ?? []}
-          isLoading={categoriesLoading}
-        />
-      </div>
       <div className="mb-6">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <h1 className="text-xl font-semibold text-[#fafafa]">{getCategoryDisplayName(category)}</h1>

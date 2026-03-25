@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import Link from "next/link";
 import { Providers } from "@/components/providers";
+import { HeaderNav } from "@/components/HeaderNav";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -34,18 +35,21 @@ export default function RootLayout({
       >
         <Providers>
           <div className="flex min-h-screen flex-col">
-            <header className="sticky top-0 z-40 border-b border-[#262626] bg-[#0a0a0a]/95 backdrop-blur-sm">
-              <div className="mx-auto flex h-12 max-w-5xl items-center justify-between px-4">
-                <Link
-                  href="/"
-                  className="font-semibold text-[#fafafa] transition-colors hover:text-[#3b82f6]"
-                >
-                  DevNews
-                </Link>
-                <div className="text-xs text-[#71717a]">
-                  {new Date().toISOString().split("T")[0]}
+            <header className="sticky top-0 z-40 bg-[#0a0a0a]/95 backdrop-blur-sm">
+              <div className="border-b border-[#262626]">
+                <div className="mx-auto flex h-12 max-w-5xl items-center justify-between px-4">
+                  <Link
+                    href="/"
+                    className="font-semibold text-[#fafafa] transition-colors hover:text-[#3b82f6]"
+                  >
+                    DevNews
+                  </Link>
+                  <div className="text-xs text-[#71717a]">
+                    {new Date().toISOString().split("T")[0]}
+                  </div>
                 </div>
               </div>
+              <HeaderNav />
             </header>
             <main className="flex-1">{children}</main>
             <footer className="border-t border-[#262626] py-4">
