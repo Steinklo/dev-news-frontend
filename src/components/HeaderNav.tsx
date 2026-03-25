@@ -4,7 +4,6 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
-  Newspaper,
   Brain,
   Wrench,
   Bot,
@@ -43,28 +42,12 @@ export function HeaderNav() {
 
   if (isLoading || !data) return null;
 
-  const isHome = pathname === "/";
-
   return (
     <div className="border-b border-[#262626]">
       <nav
         className="no-scrollbar mx-auto flex max-w-5xl items-center justify-center gap-0.5 overflow-x-auto px-4 py-1.5"
         aria-label="News categories"
       >
-        <Link
-          href="/"
-          className={cn(
-            "inline-flex shrink-0 items-center gap-1.5 rounded-md px-3 py-1.5 text-sm font-medium transition-colors",
-            "hover:bg-[#262626] hover:text-[#fafafa]",
-            "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#3b82f6]",
-            isHome
-              ? "bg-[#3b82f6]/10 text-[#3b82f6]"
-              : "text-[#a1a1aa]"
-          )}
-        >
-          <Newspaper className="h-3.5 w-3.5" aria-hidden="true" />
-          <span>All</span>
-        </Link>
         {data.categories.map((category) => {
           const Icon = categoryIcons[category.name] ?? Brain;
           const isActive = pathname === `/${category.name}`;

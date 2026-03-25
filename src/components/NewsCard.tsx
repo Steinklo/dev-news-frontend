@@ -37,8 +37,16 @@ function getSeverityVariant(severity: string | undefined) {
 }
 
 export function NewsCard({ item, showCategory = false }: NewsCardProps) {
+  const handleCardClick = () => {
+    window.open(item.url, "_blank", "noopener,noreferrer");
+  };
+
   return (
-    <Card className="group cursor-pointer">
+    <Card
+      className="group cursor-pointer"
+      onClick={handleCardClick}
+      role="article"
+    >
       <CardHeader className="pb-2">
         {showCategory && (
           <div className="mb-1">
@@ -52,18 +60,13 @@ export function NewsCard({ item, showCategory = false }: NewsCardProps) {
         )}
         <div className="flex items-start justify-between gap-4">
           <CardTitle className="text-sm leading-snug">
-            <a
-              href={item.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-start gap-1.5 text-[#fafafa] transition-colors hover:text-[#3b82f6] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#3b82f6]"
-            >
+            <span className="inline-flex items-start gap-1.5 text-[#fafafa] transition-colors group-hover:text-[#3b82f6]">
               {item.title}
               <ExternalLink
                 className="mt-0.5 h-3 w-3 shrink-0 opacity-0 transition-opacity group-hover:opacity-60"
                 aria-hidden="true"
               />
-            </a>
+            </span>
           </CardTitle>
           {item.severity && (
             <Badge
