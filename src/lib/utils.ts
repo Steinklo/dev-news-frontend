@@ -31,12 +31,12 @@ export function formatYearMonth(yearMonth: string): string {
 export function getCategoryDisplayName(slug: string): string {
   const displayNames: Record<string, string> = {
     AiModelsAndApis: "AI Models & APIs",
-    AiDeveloperTools: "AI Developer Tools",
-    AgentsAndFrameworks: "Agents & Frameworks",
+    AiDeveloperTools: "AI Dev Tools",
+    AgentsAndFrameworks: "AI Agents & Frameworks",
     AiEngineering: "AI Engineering",
     AiSafetyAndSecurity: "AI Safety & Security",
-    InfrastructureAndCloud: "Infrastructure & Cloud",
-    OpenSourceAndCommunity: "Open Source & Community",
+    InfrastructureAndCloud: "Infra & Cloud",
+    OpenSourceAndCommunity: "Open Source",
   };
   return displayNames[slug] ?? slug;
 }

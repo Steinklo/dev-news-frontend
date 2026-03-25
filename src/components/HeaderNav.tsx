@@ -18,11 +18,11 @@ import { useCategories } from "@/hooks/useCategories";
 
 // Shorter labels for the nav bar to fit in one line
 const navLabels: Record<string, string> = {
-  AiModelsAndApis: "Models & APIs",
-  AiDeveloperTools: "Dev Tools",
-  AgentsAndFrameworks: "Agents",
-  AiEngineering: "Engineering",
-  AiSafetyAndSecurity: "Safety & Security",
+  AiModelsAndApis: "AI Models & APIs",
+  AiDeveloperTools: "AI Dev Tools",
+  AgentsAndFrameworks: "AI Agents",
+  AiEngineering: "AI Engineering",
+  AiSafetyAndSecurity: "AI Safety",
   InfrastructureAndCloud: "Infra & Cloud",
   OpenSourceAndCommunity: "Open Source",
 };
