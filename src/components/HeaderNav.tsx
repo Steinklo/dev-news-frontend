@@ -35,7 +35,7 @@ export function HeaderNav() {
   return (
     <div className="border-b border-[#262626] bg-[#0a0a0a]/95 backdrop-blur-sm">
       <nav
-        className="mx-auto flex max-w-5xl gap-1 overflow-x-auto px-4 py-2 scrollbar-none"
+        className="no-scrollbar mx-auto flex max-w-5xl gap-1 overflow-x-auto px-4 py-2"
         aria-label="News categories"
       >
         {data.categories.map((category) => {

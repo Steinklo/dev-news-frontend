@@ -1,100 +1,101 @@
 // src/app/page.tsx
 "use client";
 
-import Link from "next/link";
-import {
-  Brain,
-  Wrench,
-  Bot,
-  FlaskConical,
-  ShieldAlert,
-  Server,
-  GitFork,
-  type LucideIcon,
-} from "lucide-react";
-import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { useQueries } from "@tanstack/react-query";
+import { NewsCard } from "@/components/NewsCard";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Badge } from "@/components/ui/badge";
 import { useCategories } from "@/hooks/useCategories";
-import { getCategoryDisplayName } from "@/lib/utils";
+import { fetchNewsByCategory } from "@/lib/api";
+import { getCurrentYearMonth, getCategoryDisplayName } from "@/lib/utils";
+import type { NewsItem } from "@/lib/types";
 
-const categoryIcons: Record<string, LucideIcon> = {
-  AiModelsAndApis: Brain,
-  AiDeveloperTools: Wrench,
-  AgentsAndFrameworks: Bot,
-  AiEngineering: FlaskConical,
-  AiSafetyAndSecurity: ShieldAlert,
-  InfrastructureAndCloud: Server,
-  OpenSourceAndCommunity: GitFork,
-};
-
-const categoryDescriptions: Record<string, string> = {
-  AiModelsAndApis: "Model releases, API updates, benchmarks, fine-tuning",
-  AiDeveloperTools: "Coding assistants, IDE integrations, prompt tools",
-  AgentsAndFrameworks: "LLM frameworks, agent patterns, RAG, orchestration",
-  AiEngineering: "Prompt engineering, evals, guardrails, patterns",
-  AiSafetyAndSecurity: "Prompt injection, jailbreaks, alignment, CVEs",
-  InfrastructureAndCloud: "GPU, serving, MLOps, cloud AI services",
-  OpenSourceAndCommunity: "Open-weight models, datasets, community projects",
-};
+function NewsCardSkeleton() {
+  return (
+    <div className="space-y-3 rounded-lg border border-[#262626] bg-[#141414] p-4">
+      <Skeleton className="h-5 w-3/4" />
+      <Skeleton className="h-4 w-1/2" />
+      <Skeleton className="h-20 w-full" />
+      <div className="flex gap-2">
+        <Skeleton className="h-5 w-16" />
+        <Skeleton className="h-5 w-16" />
+      </div>
+    </div>
+  );
+}
 
 export default function HomePage() {
-  const { data, isLoading, error } = useCategories();
+  const yearMonth = getCurrentYearMonth();
+  const { data: categoriesData } = useCategories();
+
+  const categories = categoriesData?.categories ?? [];
+
+  // Fetch news from all categories in parallel
+  const newsQueries = useQueries({
+    queries: categories.map((cat) => ({
+      queryKey: ["news", cat.name, yearMonth],
+      queryFn: () => fetchNewsByCategory(cat.name, yearMonth),
+      enabled: categories.length > 0,
+    })),
+  });
+
+  const isLoading = newsQueries.some((q) => q.isLoading);
+  const allArticles: (NewsItem & { _category: string })[] = newsQueries
+    .flatMap((q, i) =>
+      (q.data?.items ?? []).map((item) => ({
+        ...item,
+        _category: categories[i]?.name ?? "",
+      }))
+    )
+    .sort(
+      (a, b) =>
+        new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+    );
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-8">
-      <section className="mb-10">
-        <h1 className="text-3xl font-bold tracking-tight text-[#fafafa]">DevNews</h1>
-        <p className="mt-2 text-[#a1a1aa]">AI developer news. High signal, zero noise.</p>
+      <section className="mb-8">
+        <h1 className="text-2xl font-bold tracking-tight text-[#fafafa]">
+          Latest
+        </h1>
+        <p className="mt-1 text-sm text-[#71717a]">
+          {allArticles.length > 0
+            ? `${allArticles.length} articles this month`
+            : "AI developer news. High signal, zero noise."}
+        </p>
       </section>
 
-      <section>
-        <h2 className="mb-4 text-sm font-medium uppercase tracking-wide text-[#71717a]">Categories</h2>
+      {isLoading && (
+        <div className="space-y-3">
+          {Array.from({ length: 5 }).map((_, i) => (
+            <NewsCardSkeleton key={i} />
+          ))}
+        </div>
+      )}
 
-        {error && (
-          <div className="rounded-lg border border-red-500/50 bg-red-500/10 p-4 text-sm text-red-400">
-            Failed to load categories. Please try again later.
-          </div>
-        )}
+      {!isLoading && allArticles.length === 0 && (
+        <div className="rounded-lg border border-[#262626] bg-[#141414] p-8 text-center">
+          <p className="text-[#a1a1aa]">No articles yet this month.</p>
+          <p className="mt-2 text-xs text-[#71717a]">
+            Check back soon — new articles are curated daily.
+          </p>
+        </div>
+      )}
 
-        {isLoading && (
-          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-            {Array.from({ length: 7 }).map((_, i) => (
-              <Skeleton key={i} className="h-24" />
-            ))}
-          </div>
-        )}
-
-        {data && (
-          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-            {data.categories.map((category) => {
-              const Icon = categoryIcons[category.name] ?? Brain;
-              const description =
-                categoryDescriptions[category.name] ?? "Latest news and updates";
-
-              return (
-                <Link key={category.id} href={`/${category.name}`}>
-                  <Card className="group h-full">
-                    <CardHeader className="p-4">
-                      <div className="flex items-center gap-3">
-                        <Icon
-                          className="h-4 w-4 text-[#3b82f6]"
-                          aria-hidden="true"
-                        />
-                        <CardTitle className="text-sm text-[#fafafa]">
-                          {getCategoryDisplayName(category.name)}
-                        </CardTitle>
-                      </div>
-                      <CardDescription className="mt-1 pl-7 text-xs">
-                        {description}
-                      </CardDescription>
-                    </CardHeader>
-                  </Card>
-                </Link>
-              );
-            })}
-          </div>
-        )}
-      </section>
+      {!isLoading && allArticles.length > 0 && (
+        <div className="space-y-3">
+          {allArticles.map((item) => (
+            <div key={item.id}>
+              <div className="mb-1.5 ml-1">
+                <Badge variant="secondary" className="text-[10px]">
+                  {getCategoryDisplayName(item._category)}
+                </Badge>
+              </div>
+              <NewsCard item={item} />
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
