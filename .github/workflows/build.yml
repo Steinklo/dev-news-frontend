@@ -1,0 +1,48 @@
+name: Build & Lint
+
+on:
+  workflow_call:
+    inputs:
+      api-url:
+        description: Backend API base URL (NEXT_PUBLIC_API_URL)
+        required: false
+        type: string
+    outputs:
+      artifact-name:
+        description: Name of the uploaded build artifact
+        value: static-webapp
+
+env:
+  NODE_VERSION: '20.x'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run linting
+        run: npm run lint
+
+      - name: Build application
+        run: npm run build
+        env:
+          NEXT_PUBLIC_API_URL: ${{ inputs.api-url }}
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: static-webapp
+          path: out
+          retention-days: 7
