@@ -16,14 +16,14 @@ npm run lint         # ESLint
 - Next.js 16 (App Router, React 19, React Compiler, static export)
 - TypeScript strict mode
 - Tailwind CSS v4 + shadcn/ui (copy-paste components in src/components/ui/)
-- TanStack Query v5 (staleTime: 10-15 min, gcTime: 1 hour)
+- TanStack Query v5 (staleTime: 10 min, gcTime: 1 hour)
 - lucide-react, sonner, date-fns, clsx + tailwind-merge
 
 ## Project Structure
 
 ```
 src/app/                    # App Router pages (layout, home, [category])
-src/components/             # NewsCard, CategoryNav, MonthSelector, CategoryPageContent
+src/components/             # NewsCard, CategoryNav, MonthSelector, CategoryPageContent, HeaderNav, providers
 src/components/ui/          # shadcn/ui primitives (Badge, Button, Card, Skeleton, Tabs)
 src/hooks/                  # useCategories, useNews (TanStack Query hooks)
 src/lib/                    # types.ts, api.ts, queryKeys.ts, utils.ts
@@ -41,7 +41,8 @@ src/lib/                    # types.ts, api.ts, queryKeys.ts, utils.ts
 interface NewsItem {
   id: string; title: string; summary: string; url: string;
   category: string; relevance_score: number; source: string;
-  severity?: "Critical" | "High" | "Medium" | "Low";
+  author?: string;
+  severity?: "Critical" | "High" | "Medium" | "Low" | string;
   tags: string[]; created_at: string;
 }
 ```
