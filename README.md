@@ -50,6 +50,7 @@ src/
 │   ├── ui/                     # shadcn/ui (Badge, Button, Card, Skeleton, Tabs)
 │   ├── CategoryNav.tsx         # Category tab navigation
 │   ├── CategoryPageContent.tsx # Category page with news list
+│   ├── HeaderNav.tsx           # Top navigation bar with category links
 │   ├── MonthSelector.tsx       # Year-month picker
 │   ├── NewsCard.tsx            # Single news item card
 │   └── providers.tsx           # TanStack Query provider
@@ -81,11 +82,13 @@ Consumes the DevNews backend API:
 | `GET /news/categories` | List all categories |
 | `GET /news/category/{category}?year_month=YYYY-MM` | News by category and month |
 
-TanStack Query caching: `staleTime` 10-15 min, `gcTime` 1 hour.
+TanStack Query caching: `staleTime` 10 min, `gcTime` 1 hour.
 
 ## CI/CD
 
-- **Deploy** (push to `main`): `npm ci` → lint → build → deploy to Azure Static Web Apps (dev → prod)
+- **PR builds**: `npm ci` → lint → build validation
+- **Push to main**: `npm ci` → lint → build → deploy to Azure Static Web Apps (dev)
+- **Prod deploy**: Manual trigger via `workflow_dispatch`
 - Static export (`output: "export"`) — pre-rendered HTML served via CDN
 
 ## Categories
