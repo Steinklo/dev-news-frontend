@@ -38,32 +38,6 @@ npm run build
 |---|---|---|
 | `NEXT_PUBLIC_API_URL` | Backend API base URL | `http://localhost:7020/api/v1` |
 
-## Project Structure
-
-```
-src/
-├── app/
-│   ├── layout.tsx              # Root layout (providers, Geist fonts)
-│   ├── page.tsx                # Home page
-│   └── [category]/page.tsx     # Dynamic category route
-├── components/
-│   ├── ui/                     # shadcn/ui (Badge, Button, Card, Skeleton, Tabs)
-│   ├── CategoryNav.tsx         # Category tab navigation
-│   ├── CategoryPageContent.tsx # Category page with news list
-│   ├── HeaderNav.tsx           # Top navigation bar with category links
-│   ├── MonthSelector.tsx       # Year-month picker
-│   ├── NewsCard.tsx            # Single news item card
-│   └── providers.tsx           # TanStack Query provider
-├── hooks/
-│   ├── useCategories.ts        # Categories query hook
-│   └── useNews.ts              # News by category query hook
-└── lib/
-    ├── api.ts                  # Typed fetch helpers
-    ├── queryKeys.ts            # TanStack Query key factories
-    ├── types.ts                # API types (NewsItem, Category, etc.)
-    └── utils.ts                # cn() helper, date formatting
-```
-
 ## Design System
 
 **Modern dark developer aesthetic:**
