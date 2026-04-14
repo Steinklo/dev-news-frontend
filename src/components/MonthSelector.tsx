@@ -4,7 +4,7 @@
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { format, subMonths, addMonths, parse } from "date-fns";
 import { Button } from "@/components/ui/button";
-import { getCurrentYearMonth } from "@/lib/utils";
+import { getCurrentYearMonth, formatYearMonth } from "@/lib/utils";
 
 interface MonthSelectorProps {
   currentYearMonth: string;
@@ -34,7 +34,7 @@ export function MonthSelector({ currentYearMonth, onChange }: MonthSelectorProps
   const canGoNext = currentDate < today;
 
   return (
-    <div className="flex items-center gap-1 font-mono">
+    <div className="flex items-center gap-1">
       <Button
         variant="ghost"
         size="icon"
@@ -42,10 +42,10 @@ export function MonthSelector({ currentYearMonth, onChange }: MonthSelectorProps
         aria-label="Previous month"
         className="h-8 w-8"
       >
-        <ChevronLeft className="h-4 w-4" />
+        <ChevronLeft className="h-3.5 w-3.5" />
       </Button>
-      <span className="min-w-[110px] text-center text-sm font-medium text-[#fafafa]">
-        {currentYearMonth}
+      <span className="min-w-[130px] text-center font-mono text-xs tracking-wide text-[#9ba1b0]">
+        {formatYearMonth(currentYearMonth)}
       </span>
       <Button
         variant="ghost"
@@ -55,14 +55,14 @@ export function MonthSelector({ currentYearMonth, onChange }: MonthSelectorProps
         aria-label="Next month"
         className="h-8 w-8"
       >
-        <ChevronRight className="h-4 w-4" />
+        <ChevronRight className="h-3.5 w-3.5" />
       </Button>
       {!isCurrentMonth && (
         <Button
           variant="outline"
           size="sm"
           onClick={() => handleMonthChange(today)}
-          className="ml-2 h-7 text-xs"
+          className="ml-1 h-7"
         >
           Current
         </Button>

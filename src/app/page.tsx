@@ -8,16 +8,17 @@ import { useCategories } from "@/hooks/useCategories";
 import { fetchNewsByCategory } from "@/lib/api";
 import { getCurrentYearMonth } from "@/lib/utils";
 import type { NewsItem } from "@/lib/types";
+import { Activity } from "lucide-react";
 
 function NewsCardSkeleton() {
   return (
-    <div className="space-y-3 rounded-lg border border-[#262626] bg-[#141414] p-4">
+    <div className="space-y-3 rounded-xl border border-[#1a1d28] bg-[#0c0d14] p-5">
       <Skeleton className="h-5 w-3/4" />
-      <Skeleton className="h-4 w-1/2" />
+      <Skeleton className="h-3 w-1/3" />
       <Skeleton className="h-16 w-full" />
       <div className="flex gap-2">
-        <Skeleton className="h-5 w-16" />
-        <Skeleton className="h-5 w-16" />
+        <Skeleton className="h-5 w-16 rounded-full" />
+        <Skeleton className="h-5 w-16 rounded-full" />
       </div>
     </div>
   );
@@ -52,20 +53,20 @@ export default function HomePage() {
     );
 
   return (
-    <div className="mx-auto max-w-5xl px-4 py-6">
-      <div className="mb-5 flex items-baseline justify-between">
-        <h1 className="text-xl font-semibold tracking-tight text-[#fafafa]">
+    <div className="mx-auto max-w-6xl px-6 py-10">
+      <div className="mb-8 flex items-end justify-between">
+        <h1 className="text-2xl font-semibold tracking-tight text-[#e8eaed]">
           Latest
         </h1>
         {allArticles.length > 0 && (
-          <span className="text-xs text-[#71717a]">
+          <span className="text-xs text-[#5a6070]">
             {allArticles.length} articles
           </span>
         )}
       </div>
 
       {isLoading && (
-        <div className="space-y-2">
+        <div className="space-y-3">
           {Array.from({ length: 5 }).map((_, i) => (
             <NewsCardSkeleton key={i} />
           ))}
@@ -73,16 +74,21 @@ export default function HomePage() {
       )}
 
       {!isLoading && allArticles.length === 0 && (
-        <div className="rounded-lg border border-[#262626] bg-[#141414] p-8 text-center">
-          <p className="text-[#a1a1aa]">No articles yet this month.</p>
-          <p className="mt-2 text-xs text-[#71717a]">
-            Check back soon — new articles are curated daily.
+        <div className="rounded-xl border border-[#1a1d28] bg-[#0c0d14] p-12 text-center">
+          <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-indigo-500/10">
+            <Activity className="h-5 w-5 text-indigo-400/60" />
+          </div>
+          <p className="text-base text-[#9ba1b0]">
+            No articles yet this month
+          </p>
+          <p className="mt-2 text-xs text-[#5a6070]">
+            New articles are added daily — check back soon
           </p>
         </div>
       )}
 
       {!isLoading && allArticles.length > 0 && (
-        <div className="space-y-2">
+        <div className="stagger-children space-y-3">
           {allArticles.map((item) => (
             <NewsCard key={item.id} item={item} showCategory />
           ))}
