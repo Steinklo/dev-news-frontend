@@ -6,25 +6,25 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm transition-all focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#3b82f6] disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg text-xs transition-all focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-indigo-500/50 disabled:pointer-events-none disabled:opacity-40 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
   {
     variants: {
       variant: {
         default:
-          "border border-[#3b82f6] bg-[#3b82f6]/10 text-[#3b82f6] hover:bg-[#3b82f6]/20",
+          "border border-indigo-500/30 bg-indigo-500/10 text-indigo-400 hover:bg-indigo-500/20 hover:border-indigo-500/40",
         destructive:
-          "border border-red-500/50 bg-red-500/10 text-red-400 hover:bg-red-500/20",
+          "border border-red-500/30 bg-red-500/10 text-red-400 hover:bg-red-500/20",
         outline:
-          "border border-[#262626] bg-transparent text-[#fafafa] hover:border-[#404040] hover:bg-[#262626]/30",
+          "border border-[#1a1d28] bg-transparent text-[#9ba1b0] hover:border-[#2a2e3d] hover:bg-[#1a1d28]/50 hover:text-[#e8eaed]",
         secondary:
-          "border border-[#262626] bg-[#262626]/30 text-[#a1a1aa] hover:text-[#fafafa] hover:border-[#404040]",
+          "border border-[#1a1d28] bg-[#1a1d28]/30 text-[#5a6070] hover:text-[#9ba1b0] hover:border-[#2a2e3d]",
         ghost:
-          "text-[#a1a1aa] hover:text-[#fafafa] hover:bg-[#262626]/30",
-        link: "text-[#3b82f6] underline-offset-4 hover:underline",
+          "text-[#5a6070] hover:text-[#9ba1b0] hover:bg-[#1a1d28]/50",
+        link: "text-indigo-400 underline-offset-4 hover:underline",
       },
       size: {
         default: "h-9 px-4 py-2",
-        sm: "h-8 px-3 text-xs",
+        sm: "h-8 px-3",
         lg: "h-10 px-8",
         icon: "h-9 w-9",
       },

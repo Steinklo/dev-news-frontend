@@ -11,8 +11,18 @@ interface NewsCardProps {
   showCategory?: boolean;
 }
 
-const categoryColors: Record<string, string> = {
-  AiModelsAndApis: "bg-blue-500/10 text-blue-400 border-blue-500/20",
+const categoryGlowColors: Record<string, string> = {
+  AiModelsAndApis: "#6366f1",
+  AiDeveloperTools: "#a78bfa",
+  AgentsAndFrameworks: "#22d3ee",
+  AiEngineering: "#f59e0b",
+  AiSafetyAndSecurity: "#ef4444",
+  InfrastructureAndCloud: "#10b981",
+  OpenSourceAndCommunity: "#ec4899",
+};
+
+const categoryBadgeColors: Record<string, string> = {
+  AiModelsAndApis: "bg-indigo-500/10 text-indigo-400 border-indigo-500/20",
   AiDeveloperTools: "bg-violet-500/10 text-violet-400 border-violet-500/20",
   AgentsAndFrameworks: "bg-cyan-500/10 text-cyan-400 border-cyan-500/20",
   AiEngineering: "bg-amber-500/10 text-amber-400 border-amber-500/20",
@@ -21,22 +31,21 @@ const categoryColors: Record<string, string> = {
   OpenSourceAndCommunity: "bg-pink-500/10 text-pink-400 border-pink-500/20",
 };
 
-function getSeverityVariant(severity: string | undefined) {
-  switch (severity) {
-    case "Critical":
-      return "border-red-500 bg-red-500/20 text-red-400";
-    case "High":
-      return "border-orange-500 bg-orange-500/20 text-orange-400";
-    case "Medium":
-      return "border-yellow-500 bg-yellow-500/20 text-yellow-400";
-    case "Low":
-      return "border-green-500 bg-green-500/20 text-green-400";
-    default:
-      return "";
-  }
+function SeverityIndicator({ severity }: { severity: string }) {
+  const level = severity.toLowerCase();
+  return (
+    <div className="flex items-center gap-1.5">
+      <span className={`severity-dot ${level}`} />
+      <span className="text-[10px] font-medium uppercase text-[#5a6070]">
+        {severity}
+      </span>
+    </div>
+  );
 }
 
 export function NewsCard({ item, showCategory = false }: NewsCardProps) {
+  const glowColor = categoryGlowColors[item.category] ?? "#6366f1";
+
   const handleCardClick = () => {
     window.open(item.url, "_blank", "noopener,noreferrer");
   };
@@ -46,51 +55,45 @@ export function NewsCard({ item, showCategory = false }: NewsCardProps) {
       className="group cursor-pointer"
       onClick={handleCardClick}
       role="article"
+      style={{ "--glow-color": glowColor } as React.CSSProperties}
     >
-      <CardHeader className="pb-2">
-        {showCategory && (
-          <div className="mb-1">
-            <Badge
-              variant="outline"
-              className={categoryColors[item.category] ?? "text-[#a1a1aa]"}
-            >
-              {getCategoryDisplayName(item.category)}
-            </Badge>
-          </div>
-        )}
+      <CardHeader>
         <div className="flex items-start justify-between gap-4">
-          <CardTitle className="text-sm leading-snug">
-            <span className="inline-flex items-start gap-1.5 text-[#fafafa] transition-colors group-hover:text-[#3b82f6]">
-              {item.title}
-              <ExternalLink
-                className="mt-0.5 h-3 w-3 shrink-0 opacity-0 transition-opacity group-hover:opacity-60"
-                aria-hidden="true"
-              />
-            </span>
-          </CardTitle>
-          {item.severity && (
-            <Badge
-              variant="outline"
-              className={getSeverityVariant(item.severity)}
-            >
-              {item.severity.toUpperCase()}
-            </Badge>
-          )}
+          <div className="flex-1 space-y-1.5">
+            {showCategory && (
+              <Badge
+                variant="outline"
+                className={categoryBadgeColors[item.category] ?? "text-[#9ba1b0]"}
+              >
+                {getCategoryDisplayName(item.category)}
+              </Badge>
+            )}
+            <CardTitle className="text-[15px] leading-relaxed">
+              <span className="inline-flex items-start gap-2 text-[#e8eaed] transition-colors group-hover:text-white">
+                {item.title}
+                <ExternalLink
+                  className="mt-1 h-3 w-3 shrink-0 text-indigo-400 opacity-0 transition-all group-hover:opacity-70"
+                  aria-hidden="true"
+                />
+              </span>
+            </CardTitle>
+          </div>
+          {item.severity && <SeverityIndicator severity={item.severity} />}
         </div>
-        <div className="flex items-center gap-2 font-mono text-xs text-[#71717a]">
-          <span className="text-[#a1a1aa]">{item.source}</span>
+        <div className="flex items-center gap-2 font-mono text-[11px] tracking-wide text-[#5a6070]">
+          <span className="text-[#9ba1b0]">{item.source}</span>
           {item.author && (
             <>
-              <span aria-hidden="true">/</span>
+              <span className="text-[#2a2e3d]">/</span>
               <span>{item.author}</span>
             </>
           )}
-          <span aria-hidden="true">/</span>
+          <span className="text-[#2a2e3d]">/</span>
           <time dateTime={item.created_at}>{formatDateRelative(item.created_at)}</time>
         </div>
       </CardHeader>
-      <CardContent className="space-y-2.5">
-        <p className="text-sm leading-relaxed text-[#a1a1aa]">
+      <CardContent className="space-y-3">
+        <p className="text-sm leading-relaxed text-[#9ba1b0]">
           {item.summary}
         </p>
         {item.tags.length > 0 && (
@@ -99,9 +102,8 @@ export function NewsCard({ item, showCategory = false }: NewsCardProps) {
               <Badge
                 key={tag}
                 variant="secondary"
-                className="text-[11px]"
               >
-                #{tag}
+                {tag}
               </Badge>
             ))}
           </div>
