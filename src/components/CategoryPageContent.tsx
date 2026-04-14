@@ -7,7 +7,7 @@ import { MonthSelector } from "@/components/MonthSelector";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useNews } from "@/hooks/useNews";
 import { getCurrentYearMonth, getCategoryDisplayName } from "@/lib/utils";
-import { AlertCircle } from "lucide-react";
+import { Activity, AlertCircle } from "lucide-react";
 
 function NewsCardSkeleton() {
   return (
