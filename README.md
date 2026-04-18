@@ -72,5 +72,3 @@ TanStack Query caching: `staleTime` 10 min, `gcTime` 1 hour.
 3. AgentsAndFrameworks
 4. AiEngineering
 5. AiSafetyAndSecurity
-6. InfrastructureAndCloud
-7. OpenSourceAndCommunity

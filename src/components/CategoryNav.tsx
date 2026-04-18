@@ -9,8 +9,6 @@ import {
   Bot,
   FlaskConical,
   ShieldAlert,
-  Server,
-  GitFork,
   type LucideIcon,
 } from "lucide-react";
 import { cn, getCategoryDisplayName } from "@/lib/utils";
@@ -23,8 +21,6 @@ const categoryIcons: Record<string, LucideIcon> = {
   AgentsAndFrameworks: Bot,
   AiEngineering: FlaskConical,
   AiSafetyAndSecurity: ShieldAlert,
-  InfrastructureAndCloud: Server,
-  OpenSourceAndCommunity: GitFork,
 };
 
 interface CategoryNavProps {
@@ -38,7 +34,7 @@ export function CategoryNav({ categories, isLoading }: CategoryNavProps) {
   if (isLoading) {
     return (
       <nav className="flex flex-wrap gap-2" aria-label="Categories loading">
-        {Array.from({ length: 7 }).map((_, i) => (
+        {Array.from({ length: 5 }).map((_, i) => (
           <Skeleton key={i} className="h-9 w-32" />
         ))}
       </nav>
