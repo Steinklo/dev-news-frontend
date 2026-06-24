@@ -10,8 +10,6 @@ export function generateStaticParams() {
     { category: "AgentsAndFrameworks" },
     { category: "AiEngineering" },
     { category: "AiSafetyAndSecurity" },
-    { category: "InfrastructureAndCloud" },
-    { category: "OpenSourceAndCommunity" },
   ];
 }
 

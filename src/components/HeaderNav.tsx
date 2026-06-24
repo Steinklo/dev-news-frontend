@@ -9,8 +9,6 @@ import {
   Bot,
   FlaskConical,
   ShieldAlert,
-  Server,
-  GitFork,
   type LucideIcon,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -22,8 +20,6 @@ const navLabels: Record<string, string> = {
   AgentsAndFrameworks: "Agents",
   AiEngineering: "Engineering",
   AiSafetyAndSecurity: "Safety",
-  InfrastructureAndCloud: "Infra",
-  OpenSourceAndCommunity: "Open Source",
 };
 
 const categoryIcons: Record<string, LucideIcon> = {
@@ -32,8 +28,6 @@ const categoryIcons: Record<string, LucideIcon> = {
   AgentsAndFrameworks: Bot,
   AiEngineering: FlaskConical,
   AiSafetyAndSecurity: ShieldAlert,
-  InfrastructureAndCloud: Server,
-  OpenSourceAndCommunity: GitFork,
 };
 
 const categoryAccentColors: Record<string, string> = {
@@ -42,8 +36,6 @@ const categoryAccentColors: Record<string, string> = {
   AgentsAndFrameworks: "text-cyan-400 bg-cyan-500/10 ring-cyan-500/20",
   AiEngineering: "text-amber-400 bg-amber-500/10 ring-amber-500/20",
   AiSafetyAndSecurity: "text-red-400 bg-red-500/10 ring-red-500/20",
-  InfrastructureAndCloud: "text-emerald-400 bg-emerald-500/10 ring-emerald-500/20",
-  OpenSourceAndCommunity: "text-pink-400 bg-pink-500/10 ring-pink-500/20",
 };
 
 export function HeaderNav() {

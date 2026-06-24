@@ -17,8 +17,6 @@ const categoryGlowColors: Record<string, string> = {
   AgentsAndFrameworks: "#22d3ee",
   AiEngineering: "#f59e0b",
   AiSafetyAndSecurity: "#ef4444",
-  InfrastructureAndCloud: "#10b981",
-  OpenSourceAndCommunity: "#ec4899",
 };
 
 const categoryBadgeColors: Record<string, string> = {
@@ -27,8 +25,6 @@ const categoryBadgeColors: Record<string, string> = {
   AgentsAndFrameworks: "bg-cyan-500/10 text-cyan-400 border-cyan-500/20",
   AiEngineering: "bg-amber-500/10 text-amber-400 border-amber-500/20",
   AiSafetyAndSecurity: "bg-red-500/10 text-red-400 border-red-500/20",
-  InfrastructureAndCloud: "bg-emerald-500/10 text-emerald-400 border-emerald-500/20",
-  OpenSourceAndCommunity: "bg-pink-500/10 text-pink-400 border-pink-500/20",
 };
 
 function SeverityIndicator({ severity }: { severity: string }) {
