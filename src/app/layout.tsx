@@ -66,9 +66,17 @@ export default function RootLayout({
                       DevNews
                     </span>
                   </div>
-                  <p className="text-[11px] text-[#3a3f52]">
-                    Developer news, curated daily
-                  </p>
+                  <div className="flex items-center gap-4">
+                    <Link
+                      href="/privacy"
+                      className="text-[11px] text-[#5a6070] transition-colors hover:text-[#9aa0b0]"
+                    >
+                      Privacy
+                    </Link>
+                    <p className="text-[11px] text-[#3a3f52]">
+                      Developer news, curated daily
+                    </p>
+                  </div>
                 </div>
               </div>
             </footer>
