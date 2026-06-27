@@ -42,15 +42,25 @@ function SeverityIndicator({ severity }: { severity: string }) {
 export function NewsCard({ item, showCategory = false }: NewsCardProps) {
   const glowColor = categoryGlowColors[item.category] ?? "#6366f1";
 
-  const handleCardClick = () => {
+  const openArticle = () => {
     window.open(item.url, "_blank", "noopener,noreferrer");
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      openArticle();
+    }
   };
 
   return (
     <Card
-      className="group cursor-pointer"
-      onClick={handleCardClick}
-      role="article"
+      className="group cursor-pointer transition-all duration-300 hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500/50 focus-visible:ring-offset-2 focus-visible:ring-offset-[#08090d]"
+      onClick={openArticle}
+      onKeyDown={handleKeyDown}
+      role="link"
+      tabIndex={0}
+      aria-label={`${item.title} — opens in a new tab`}
       style={{ "--glow-color": glowColor } as React.CSSProperties}
     >
       <CardHeader>
@@ -89,7 +99,7 @@ export function NewsCard({ item, showCategory = false }: NewsCardProps) {
         </div>
       </CardHeader>
       <CardContent className="space-y-3">
-        <p className="text-sm leading-relaxed text-[#9ba1b0]">
+        <p className="line-clamp-3 text-sm leading-relaxed text-[#9ba1b0]">
           {item.summary}
         </p>
         {item.tags.length > 0 && (
