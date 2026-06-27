@@ -18,6 +18,10 @@ export function MonthSelector({ currentYearMonth, onChange }: MonthSelectorProps
 
   const isCurrentMonth = currentYearMonth === currentMonthStr;
 
+  // Compare at month granularity ("yyyy-MM" sorts lexicographically) so we
+  // can't page into a future month from within the current one.
+  const canGoNext = currentYearMonth < currentMonthStr;
+
   const handleMonthChange = (newDate: Date) => {
     const newYearMonth = format(newDate, "yyyy-MM");
     onChange(newYearMonth);
@@ -30,8 +34,6 @@ export function MonthSelector({ currentYearMonth, onChange }: MonthSelectorProps
   const goToNextMonth = () => {
     handleMonthChange(addMonths(currentDate, 1));
   };
-
-  const canGoNext = currentDate < today;
 
   return (
     <div className="flex items-center gap-1">

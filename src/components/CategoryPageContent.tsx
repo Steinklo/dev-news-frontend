@@ -1,34 +1,20 @@
 // src/components/CategoryPageContent.tsx
 "use client";
 
-import { useState } from "react";
 import { NewsCard } from "@/components/NewsCard";
 import { MonthSelector } from "@/components/MonthSelector";
-import { Skeleton } from "@/components/ui/skeleton";
+import { LoadingState } from "@/components/LoadingState";
+import { useSelectedMonth } from "@/components/MonthContext";
 import { useNews } from "@/hooks/useNews";
-import { getCurrentYearMonth, getCategoryDisplayName } from "@/lib/utils";
+import { getCategoryDisplayName } from "@/lib/utils";
 import { Activity, AlertCircle } from "lucide-react";
-
-function NewsCardSkeleton() {
-  return (
-    <div className="space-y-3 rounded-xl border border-[#1a1d28] bg-[#0c0d14] p-5">
-      <Skeleton className="h-5 w-3/4" />
-      <Skeleton className="h-3 w-1/3" />
-      <Skeleton className="h-20 w-full" />
-      <div className="flex gap-2">
-        <Skeleton className="h-5 w-16 rounded-full" />
-        <Skeleton className="h-5 w-16 rounded-full" />
-      </div>
-    </div>
-  );
-}
 
 interface CategoryPageContentProps {
   category: string;
 }
 
 export function CategoryPageContent({ category }: CategoryPageContentProps) {
-  const [yearMonth, setYearMonth] = useState(getCurrentYearMonth);
+  const { yearMonth, setYearMonth } = useSelectedMonth();
   const { data, isLoading, error } = useNews(category, yearMonth);
 
   return (
@@ -53,13 +39,7 @@ export function CategoryPageContent({ category }: CategoryPageContentProps) {
         </div>
       )}
 
-      {isLoading && (
-        <div className="space-y-3">
-          {Array.from({ length: 5 }).map((_, i) => (
-            <NewsCardSkeleton key={i} />
-          ))}
-        </div>
-      )}
+      {isLoading && <LoadingState />}
 
       {data && (
         <>

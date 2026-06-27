@@ -1,6 +1,7 @@
 // src/components/HeaderNav.tsx
 "use client";
 
+import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
@@ -38,15 +39,79 @@ const categoryAccentColors: Record<string, string> = {
   AiSafetyAndSecurity: "text-red-400 bg-red-500/10 ring-red-500/20",
 };
 
-export function HeaderNav() {
+interface HeaderNavProps {
+  className?: string;
+  // Tighter pills + smaller icons for the stacked mobile row.
+  compact?: boolean;
+  // Fade the edge(s) that have more scrollable content, hinting overflow.
+  fade?: boolean;
+}
+
+// Width of the edge fade, in px.
+const FADE = 28;
+
+export function HeaderNav({
+  className,
+  compact = false,
+  fade = false,
+}: HeaderNavProps) {
   const pathname = usePathname();
   const { data, isLoading } = useCategories();
+  const navRef = useRef<HTMLElement>(null);
+  const [edges, setEdges] = useState({ left: false, right: false });
+
+  const update = useCallback(() => {
+    const el = navRef.current;
+    if (!el) return;
+    const left = el.scrollLeft > 4;
+    const right =
+      Math.ceil(el.scrollLeft + el.clientWidth) < el.scrollWidth - 1;
+    setEdges((prev) =>
+      prev.left === left && prev.right === right ? prev : { left, right }
+    );
+  }, []);
+
+  // Re-measure when the fade is enabled, on resize, and once the category
+  // list has rendered (data dependency) so scrollWidth is accurate.
+  useEffect(() => {
+    if (!fade) return;
+    const el = navRef.current;
+    if (!el) return;
+    update();
+    const ro = new ResizeObserver(update);
+    ro.observe(el);
+    window.addEventListener("resize", update);
+    return () => {
+      ro.disconnect();
+      window.removeEventListener("resize", update);
+    };
+  }, [fade, update, data]);
 
   if (isLoading || !data) return null;
 
+  const maskImage =
+    edges.left && edges.right
+      ? `linear-gradient(to right, transparent, #000 ${FADE}px, #000 calc(100% - ${FADE}px), transparent)`
+      : edges.right
+        ? `linear-gradient(to right, #000 calc(100% - ${FADE}px), transparent)`
+        : edges.left
+          ? `linear-gradient(to right, transparent, #000 ${FADE}px)`
+          : undefined;
+
+  const maskStyle =
+    fade && maskImage
+      ? { WebkitMaskImage: maskImage, maskImage }
+      : undefined;
+
   return (
     <nav
-      className="no-scrollbar mx-auto flex max-w-6xl items-center gap-1 overflow-x-auto px-6 py-2"
+      ref={navRef}
+      onScroll={fade ? update : undefined}
+      style={maskStyle}
+      className={cn(
+        "no-scrollbar flex items-center gap-1 overflow-x-auto",
+        className
+      )}
       aria-label="News categories"
     >
       {data.categories.map((category) => {
@@ -59,16 +124,18 @@ export function HeaderNav() {
             key={category.id}
             href={`/${category.name}`}
             className={cn(
-              "inline-flex shrink-0 items-center gap-1.5 rounded-full px-3 py-1.5 text-sm font-medium transition-all",
+              "inline-flex shrink-0 items-center gap-1.5 rounded-full font-medium transition-all",
+              compact ? "px-2.5 py-1 text-[13px]" : "px-3 py-1.5 text-sm",
               "hover:bg-[#1a1d28] hover:text-[#e8eaed]",
               "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500/50",
-              isActive
-                ? cn("ring-1", accentClasses)
-                : "text-[#5a6070]"
+              isActive ? cn("ring-1", accentClasses) : "text-[#5a6070]"
             )}
             aria-current={isActive ? "page" : undefined}
           >
-            <Icon className="h-3 w-3" aria-hidden="true" />
+            <Icon
+              className={compact ? "h-2.5 w-2.5" : "h-3 w-3"}
+              aria-hidden="true"
+            />
             <span>{navLabels[category.name] ?? category.name}</span>
           </Link>
         );
