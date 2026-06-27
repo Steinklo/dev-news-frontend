@@ -9,7 +9,7 @@ import { LoadingState } from "@/components/LoadingState";
 import { useCategories } from "@/hooks/useCategories";
 import { fetchNewsByCategory } from "@/lib/api";
 import type { NewsItem } from "@/lib/types";
-import { Activity } from "lucide-react";
+import { Activity, AlertCircle } from "lucide-react";
 
 // How many months back "Latest" will look for content before giving up, so the
 // front page never sits empty across a month rollover or ingestion gap.
@@ -46,6 +46,7 @@ export default function HomePage() {
         new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
     );
 
+  const hasErrors = newsQueries.some((q) => q.isError);
   const queriesSettled =
     categories.length > 0 && newsQueries.every((q) => !q.isLoading);
   const reachedLookbackLimit = monthOffset >= MAX_LOOKBACK;
@@ -54,14 +55,18 @@ export default function HomePage() {
   // Step back a month when the current one is empty and we still have budget.
   // Adjusting state during render (React re-runs render with the new value and
   // discards this pass) is the supported pattern here — it avoids an effect.
-  if (monthEmpty && !reachedLookbackLimit) {
+  // Skip on error: a failed query also looks "empty", and walking back would
+  // bury the failure instead of surfacing it.
+  if (monthEmpty && !reachedLookbackLimit && !hasErrors) {
     setMonthOffset((o) => o + 1);
   }
 
   const isLoading = categoriesLoading || newsQueries.some((q) => q.isLoading);
+  const showError = hasErrors && allArticles.length === 0;
   // Keep showing skeletons while we walk back, so the empty state never flashes.
-  const showLoading = isLoading || (monthEmpty && !reachedLookbackLimit);
-  const showEmpty = monthEmpty && reachedLookbackLimit;
+  const showLoading =
+    !showError && (isLoading || (monthEmpty && !reachedLookbackLimit));
+  const showEmpty = !hasErrors && monthEmpty && reachedLookbackLimit;
   const isPastMonth = monthOffset > 0 && allArticles.length > 0;
 
   return (
@@ -83,6 +88,15 @@ export default function HomePage() {
           </span>
         )}
       </div>
+
+      {showError && (
+        <div className="flex items-center gap-3 rounded-xl border border-red-500/20 bg-red-500/5 p-5">
+          <AlertCircle className="h-4 w-4 shrink-0 text-red-400" />
+          <p className="text-xs text-red-400">
+            Failed to load articles. Please try again later.
+          </p>
+        </div>
+      )}
 
       {showLoading && <LoadingState />}
 

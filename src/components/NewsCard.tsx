@@ -47,7 +47,9 @@ export function NewsCard({ item, showCategory = false }: NewsCardProps) {
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === "Enter" || e.key === " ") {
+    // Enter activates a link; Space is intentionally left to scroll the page,
+    // per WAI-ARIA semantics for role="link".
+    if (e.key === "Enter") {
       e.preventDefault();
       openArticle();
     }

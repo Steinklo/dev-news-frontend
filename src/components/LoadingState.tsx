@@ -3,7 +3,6 @@
 
 import { useEffect, useState } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
-import { cn } from "@/lib/utils";
 
 // Skeleton that structurally mirrors <NewsCard> so the swap to real content
 // produces no layout shift. [continuity / no CLS]
@@ -46,19 +45,23 @@ export function LoadingState({ count = 5 }: LoadingStateProps) {
 
   return (
     <div>
+      {/* Render the message only once it's due, so the live region actually
+          announces it (a CSS opacity toggle would not fire screen readers).
+          min-h reserves the row to avoid a layout shift when it appears. */}
       <div
-        className={cn(
-          "mb-4 flex items-center gap-2 text-xs text-[#5a6070] transition-opacity duration-700",
-          showStatus ? "opacity-100" : "opacity-0"
-        )}
+        className="mb-4 flex min-h-4 items-center gap-2 text-xs text-[#5a6070]"
         role="status"
         aria-live="polite"
       >
-        <span
-          className="h-1.5 w-1.5 animate-glow-pulse rounded-full bg-indigo-400"
-          aria-hidden="true"
-        />
-        <span>Waking the news engine — first load takes a moment…</span>
+        {showStatus && (
+          <span className="flex animate-fade-up items-center gap-2">
+            <span
+              className="h-1.5 w-1.5 animate-glow-pulse rounded-full bg-indigo-400"
+              aria-hidden="true"
+            />
+            Waking the news engine — first load takes a moment…
+          </span>
+        )}
       </div>
       <div className="space-y-3">
         {Array.from({ length: count }).map((_, i) => (
