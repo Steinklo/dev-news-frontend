@@ -28,6 +28,20 @@ export function formatYearMonth(yearMonth: string): string {
   return format(date, "MMMM yyyy");
 }
 
+// Guards against XSS via javascript:/data: URLs in backend-supplied links.
+// Returns the URL only if it uses a safe http(s) scheme, otherwise undefined.
+export function safeHttpUrl(url: string | undefined): string | undefined {
+  if (!url) return undefined;
+  try {
+    const parsed = new URL(url, "https://invalid.local");
+    return parsed.protocol === "http:" || parsed.protocol === "https:"
+      ? url
+      : undefined;
+  } catch {
+    return undefined;
+  }
+}
+
 export function getCategoryDisplayName(slug: string): string {
   const displayNames: Record<string, string> = {
     AiModelsAndApis: "AI Models",

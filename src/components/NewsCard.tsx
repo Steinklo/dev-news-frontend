@@ -16,7 +16,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import type { NewsItem } from "@/lib/types";
-import { formatDateRelative, getCategoryDisplayName } from "@/lib/utils";
+import { formatDateRelative, getCategoryDisplayName, safeHttpUrl } from "@/lib/utils";
 
 interface NewsCardProps {
   item: NewsItem;
@@ -54,6 +54,7 @@ function SeverityIndicator({ severity }: { severity: string }) {
 export function NewsCard({ item, showCategory = false }: NewsCardProps) {
   const glowColor = categoryGlowColors[item.category] ?? "#6366f1";
   const [open, setOpen] = React.useState(false);
+  const articleUrl = safeHttpUrl(item.url);
 
   const openDialog = () => setOpen(true);
 
@@ -158,12 +159,16 @@ export function NewsCard({ item, showCategory = false }: NewsCardProps) {
           {tags}
 
           <DialogFooter>
-            <Button asChild>
-              <a href={item.url} target="_blank" rel="noopener noreferrer">
-                Read full article
-                <ExternalLink aria-hidden="true" />
-              </a>
-            </Button>
+            {articleUrl ? (
+              <Button asChild>
+                <a href={articleUrl} target="_blank" rel="noopener noreferrer">
+                  Read full article
+                  <ExternalLink aria-hidden="true" />
+                </a>
+              </Button>
+            ) : (
+              <Button disabled>Article unavailable</Button>
+            )}
           </DialogFooter>
         </DialogContent>
       </Dialog>
