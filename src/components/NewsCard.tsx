@@ -1,8 +1,20 @@
 // src/components/NewsCard.tsx
 
+"use client";
+
+import * as React from "react";
 import { ExternalLink } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import type { NewsItem } from "@/lib/types";
 import { formatDateRelative, getCategoryDisplayName } from "@/lib/utils";
 
@@ -41,82 +53,120 @@ function SeverityIndicator({ severity }: { severity: string }) {
 
 export function NewsCard({ item, showCategory = false }: NewsCardProps) {
   const glowColor = categoryGlowColors[item.category] ?? "#6366f1";
+  const [open, setOpen] = React.useState(false);
 
-  const openArticle = () => {
-    window.open(item.url, "_blank", "noopener,noreferrer");
-  };
+  const openDialog = () => setOpen(true);
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
-    // Enter activates a link; Space is intentionally left to scroll the page,
-    // per WAI-ARIA semantics for role="link".
-    if (e.key === "Enter") {
+    if (e.key === "Enter" || e.key === " ") {
       e.preventDefault();
-      openArticle();
+      openDialog();
     }
   };
 
-  return (
-    <Card
-      className="group cursor-pointer transition-all duration-300 hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500/50 focus-visible:ring-offset-2 focus-visible:ring-offset-[#08090d]"
-      onClick={openArticle}
-      onKeyDown={handleKeyDown}
-      role="link"
-      tabIndex={0}
-      aria-label={`${item.title} — opens in a new tab`}
-      style={{ "--glow-color": glowColor } as React.CSSProperties}
-    >
-      <CardHeader>
-        <div className="flex items-start justify-between gap-4">
-          <div className="flex-1 space-y-1.5">
-            {showCategory && (
-              <Badge
-                variant="outline"
-                className={categoryBadgeColors[item.category] ?? "text-[#9ba1b0]"}
-              >
-                {getCategoryDisplayName(item.category)}
-              </Badge>
-            )}
-            <CardTitle className="text-[15px] leading-relaxed">
-              <span className="inline-flex items-start gap-2 text-[#e8eaed] transition-colors group-hover:text-white">
-                {item.title}
-                <ExternalLink
-                  className="mt-1 h-3 w-3 shrink-0 text-indigo-400 opacity-0 transition-all group-hover:opacity-70"
-                  aria-hidden="true"
-                />
-              </span>
-            </CardTitle>
-          </div>
-          {item.severity && <SeverityIndicator severity={item.severity} />}
-        </div>
-        <div className="flex items-center gap-2 font-mono text-[11px] tracking-wide text-[#5a6070]">
-          <span className="text-[#9ba1b0]">{item.source}</span>
-          {item.author && (
-            <>
-              <span className="text-[#2a2e3d]">/</span>
-              <span>{item.author}</span>
-            </>
-          )}
+  const meta = (
+    <div className="flex items-center gap-2 font-mono text-[11px] tracking-wide text-[#5a6070]">
+      <span className="text-[#9ba1b0]">{item.source}</span>
+      {item.author && (
+        <>
           <span className="text-[#2a2e3d]">/</span>
-          <time dateTime={item.created_at}>{formatDateRelative(item.created_at)}</time>
-        </div>
-      </CardHeader>
-      <CardContent className="space-y-3">
-        <p className="line-clamp-3 text-sm leading-relaxed text-[#9ba1b0]">
-          {item.summary}
-        </p>
-        {item.tags.length > 0 && (
-          <div className="flex flex-wrap gap-1.5">
-            {item.tags.map((tag) => (
-              <Badge
-                key={tag}
-                variant="secondary"
-              >
-                {tag}
-              </Badge>
-            ))}
+          <span>{item.author}</span>
+        </>
+      )}
+      <span className="text-[#2a2e3d]">/</span>
+      <time dateTime={item.created_at}>{formatDateRelative(item.created_at)}</time>
+    </div>
+  );
+
+  const tags = item.tags.length > 0 && (
+    <div className="flex flex-wrap gap-1.5">
+      {item.tags.map((tag) => (
+        <Badge key={tag} variant="secondary">
+          {tag}
+        </Badge>
+      ))}
+    </div>
+  );
+
+  return (
+    <>
+      <Card
+        className="group cursor-pointer transition-all duration-300 hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500/50 focus-visible:ring-offset-2 focus-visible:ring-offset-[#08090d]"
+        onClick={openDialog}
+        onKeyDown={handleKeyDown}
+        role="button"
+        tabIndex={0}
+        aria-haspopup="dialog"
+        aria-label={`${item.title} — show summary`}
+        style={{ "--glow-color": glowColor } as React.CSSProperties}
+      >
+        <CardHeader>
+          <div className="flex items-start justify-between gap-4">
+            <div className="flex-1 space-y-1.5">
+              {showCategory && (
+                <Badge
+                  variant="outline"
+                  className={categoryBadgeColors[item.category] ?? "text-[#9ba1b0]"}
+                >
+                  {getCategoryDisplayName(item.category)}
+                </Badge>
+              )}
+              <CardTitle className="text-[15px] leading-relaxed">
+                <span className="text-[#e8eaed] transition-colors group-hover:text-white">
+                  {item.title}
+                </span>
+              </CardTitle>
+            </div>
+            {item.severity && <SeverityIndicator severity={item.severity} />}
           </div>
-        )}
-      </CardContent>
-    </Card>
+          {meta}
+        </CardHeader>
+        <CardContent className="space-y-3">
+          <p className="line-clamp-3 text-sm leading-relaxed text-[#9ba1b0]">
+            {item.summary}
+          </p>
+          {tags}
+        </CardContent>
+      </Card>
+
+      <Dialog open={open} onOpenChange={setOpen}>
+        <DialogContent>
+          <DialogHeader>
+            {showCategory && (
+              <div>
+                <Badge
+                  variant="outline"
+                  className={categoryBadgeColors[item.category] ?? "text-[#9ba1b0]"}
+                >
+                  {getCategoryDisplayName(item.category)}
+                </Badge>
+              </div>
+            )}
+            <DialogTitle>{item.title}</DialogTitle>
+            <div className="flex items-center justify-between gap-4">
+              {meta}
+              {item.severity && <SeverityIndicator severity={item.severity} />}
+            </div>
+          </DialogHeader>
+
+          <DialogDescription asChild>
+            <p className="max-h-[70vh] overflow-y-auto whitespace-pre-line">
+              {item.summary}
+            </p>
+          </DialogDescription>
+
+          {tags}
+
+          <DialogFooter>
+            <Button asChild>
+              <a href={item.url} target="_blank" rel="noopener noreferrer">
+                Read full article
+                <ExternalLink aria-hidden="true" />
+              </a>
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+    </>
   );
 }
