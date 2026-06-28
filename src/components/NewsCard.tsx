@@ -131,7 +131,7 @@ export function NewsCard({ item, showCategory = false }: NewsCardProps) {
       </Card>
 
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent>
+        <DialogContent className="sm:max-w-2xl">
           <DialogHeader>
             {showCategory && (
               <div>
@@ -151,7 +151,7 @@ export function NewsCard({ item, showCategory = false }: NewsCardProps) {
           </DialogHeader>
 
           <DialogDescription asChild>
-            <p className="max-h-[70vh] max-w-[65ch] overflow-y-auto whitespace-pre-line text-[15px] leading-8">
+            <p className="max-h-[70vh] overflow-y-auto whitespace-pre-line text-[15px] leading-8">
               {item.summary}
             </p>
           </DialogDescription>
