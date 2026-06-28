@@ -151,7 +151,7 @@ export function NewsCard({ item, showCategory = false }: NewsCardProps) {
           </DialogHeader>
 
           <DialogDescription asChild>
-            <p className="max-h-[70vh] overflow-y-auto whitespace-pre-line">
+            <p className="max-h-[70vh] max-w-[65ch] overflow-y-auto whitespace-pre-line text-[15px] leading-8">
               {item.summary}
             </p>
           </DialogDescription>
